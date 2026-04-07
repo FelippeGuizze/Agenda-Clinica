@@ -3,12 +3,12 @@ package br.com.agendaclinica.crud.agenda_clinica.dao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import br.com.agendaclinica.crud.agenda_clinica.model.Profissional;
+import br.com.agendaclinica.crud.agenda_clinica.util.HibernateUtil;
 
 public class ProfissionalDAO {
     
-    private static SessionFactory factory = new Configuration().configure().buildSessionFactory();
+    private static SessionFactory factory = HibernateUtil.getSessionFactory();
 
     public void salvar(Profissional profissional) {
         try (Session session = factory.openSession()) {

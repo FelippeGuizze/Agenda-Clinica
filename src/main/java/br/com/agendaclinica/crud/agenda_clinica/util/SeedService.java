@@ -3,14 +3,13 @@ package br.com.agendaclinica.crud.agenda_clinica.util;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import br.com.agendaclinica.crud.agenda_clinica.model.Usuario;
 import br.com.agendaclinica.crud.agenda_clinica.model.DisponibilidadeProfissional;
 
 public class SeedService {
 
-    private static SessionFactory factory = new Configuration().configure().buildSessionFactory();
+    private static SessionFactory factory = HibernateUtil.getSessionFactory();
 
     /**
      * Insere dados iniciais no banco de dados

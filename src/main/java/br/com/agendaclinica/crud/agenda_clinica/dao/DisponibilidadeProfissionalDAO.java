@@ -3,14 +3,14 @@ package br.com.agendaclinica.crud.agenda_clinica.dao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import br.com.agendaclinica.crud.agenda_clinica.model.DisponibilidadeProfissional;
+import br.com.agendaclinica.crud.agenda_clinica.util.HibernateUtil;
 import java.util.List;
 
 public class DisponibilidadeProfissionalDAO {
     
-    private static SessionFactory factory = new Configuration().configure().buildSessionFactory();
+    private static SessionFactory factory = HibernateUtil.getSessionFactory();
 
     public void salvar(DisponibilidadeProfissional disponibilidade) {
         try (Session session = factory.openSession()) {

@@ -17,7 +17,10 @@ public class UsuarioServlet extends HttpServlet {
             throws ServletException, IOException {
         
         String nome = request.getParameter("nomeUsuario");
-        Usuario user = new Usuario(nome);
+        String email = request.getParameter("email");
+        String senha = request.getParameter("senha");
+        Integer categoria = Integer.parseInt(request.getParameter("categoria"));
+        Usuario user = new Usuario(nome, email, senha, categoria);
         
         dao.salvar(user); // Função pra colocar no banco
         

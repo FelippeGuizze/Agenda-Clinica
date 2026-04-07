@@ -21,7 +21,7 @@ public class App {
             // Teste inserindo dados
             Transaction t = session.beginTransaction();
             
-            Usuario novoUsuario = new Usuario("Uniedit Dev");
+            Usuario novoUsuario = new Usuario("Uniedit Dev", "dev@uniedit.com", "123456", 0);
             session.persist(novoUsuario);
             
             t.commit();
