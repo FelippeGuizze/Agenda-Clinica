@@ -8,5 +8,9 @@
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
         <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.Usuario"/>
+        <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.Paciente"/>
+        <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.Profissional"/>
+        <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.Atendimento"/>
+        <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.ObservacaoAtendimento"/>
     </session-factory>
 </hibernate-configuration>
