@@ -17,12 +17,14 @@
             <div class="erro">
                 <strong>❌ Erro:</strong> ${erro}
             </div>
+            <c:remove var="erro" scope="session"/>
         </c:if>
 
         <c:if test="${not empty sucesso}">
             <div class="sucesso">
                 <strong>✓ Sucesso:</strong> ${sucesso}
             </div>
+            <c:remove var="sucesso" scope="session"/>
         </c:if>
 
         <c:if test="${sessionScope.usuarioCategoria != 2}">
@@ -97,12 +99,49 @@
     </div>
 
     <script>
-        // Validar horário em tempo real
-        document.getElementById('horario').addEventListener('change', function() {
-            if (this.value) {
-                console.log('Horário selecionado: ' + this.value);
-            }
+        // Carregar disponibilidades ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarDisponibilidades();
         });
+
+        // Função para carregar disponibilidades via AJAX
+        function carregarDisponibilidades() {
+            fetch('${pageContext.request.contextPath}/ListarDisponibilidadesServlet')
+                .then(response => response.text())
+                .then(data => {
+                    document.querySelector('tbody').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar disponibilidades:', error);
+                    document.querySelector('tbody').innerHTML = '<tr><td colspan="4" style="padding: 10px; text-align: center; color: #ff6b6b;">Erro ao carregar dados</td></tr>';
+                });
+        }
+
+        // Função para remover disponibilidade
+        function removerDisponibilidade(id) {
+            if (confirm('Tem certeza que deseja remover esta disponibilidade?')) {
+                // Criar formulário dinâmico para POST
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '${pageContext.request.contextPath}/RemoverDisponibilidadeServlet';
+
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'id';
+                input.value = id;
+
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        // Recarregar após adicionar nova disponibilidade
+        <c:if test="${not empty sucesso}">
+            setTimeout(function() {
+                carregarDisponibilidades();
+            }, 1000);
+        </c:if>
     </script>
 </body>
 </html>

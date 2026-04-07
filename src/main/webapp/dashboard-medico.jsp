@@ -18,6 +18,7 @@
             <div class="sucesso">
                 <strong>✓</strong> ${sucesso}
             </div>
+            <c:remove var="sucesso" scope="session"/>
         </c:if>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
@@ -26,9 +27,9 @@
                 📆 Definir Disponibilidade
             </a>
 
-            <a href="#" 
+            <a href="${pageContext.request.contextPath}/tipos-consulta.jsp" 
                style="display: block; padding: 20px; background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); border-radius: 8px; text-decoration: none; text-align: center; color: white; font-weight: 600; transition: all 0.3s ease;">
-                👥 Meus Agendamentos
+                💰 Definir Preços
             </a>
         </div>
 

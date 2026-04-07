@@ -37,16 +37,30 @@ CREATE TABLE disponibilidade_profissionais (
     UNIQUE KEY unique_prof_dia_hora (profissional_id, dia_semana, horario)
 );
 
--- Tabela de Atendimentos
+-- Tabela de Tipos de Consulta (com preços definidos pelos profissionais)
+CREATE TABLE tipos_consulta (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    profissional_id BIGINT NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    preco DECIMAL(10,2) NOT NULL,
+    descricao TEXT,
+    ativo BOOLEAN NOT NULL DEFAULT TRUE,
+    FOREIGN KEY (profissional_id) REFERENCES profissionais(id)
+);
+
+-- Tabela de Atendimentos (atualizada com preço e status melhorado)
 CREATE TABLE atendimentos (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     tipo VARCHAR(100) NOT NULL,
-    paciente_id BIGINT NOT NULL,
+    paciente_id BIGINT NULL COMMENT 'NULL se ainda não agendado',
     profissional_id BIGINT NOT NULL,
     datahora DATETIME NOT NULL,
-    status VARCHAR(50) NOT NULL COMMENT 'Agendado, Em progresso, Concluído, Cancelado',
+    status VARCHAR(50) NOT NULL COMMENT 'Disponível, Agendado, Em progresso, Concluído, Cancelado',
+    preco DECIMAL(10,2) NULL,
+    disponibilidade_id BIGINT NULL,
     FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
-    FOREIGN KEY (profissional_id) REFERENCES profissionais(id)
+    FOREIGN KEY (profissional_id) REFERENCES profissionais(id),
+    FOREIGN KEY (disponibilidade_id) REFERENCES disponibilidade_profissionais(id)
 );
 
 -- Tabela de Observações de Atendimento
@@ -107,14 +121,20 @@ INSERT INTO disponibilidade_profissionais (profissional_id, dia_semana, horario,
 (-1, 'DOMINGO', '12:00', TRUE),
 (-1, 'DOMINGO', '16:00', TRUE);
 
+-- Inserindo tipos de consulta
+INSERT INTO tipos_consulta (profissional_id, nome, preco, descricao, ativo) VALUES
+(1, 'Consulta Geral', 150.00, 'Consulta médica de caráter geral.', TRUE),
+(1, 'Exame de Sangue', 80.00, 'Coleta de sangue para exames laboratoriais.', TRUE),
+(2, 'Consulta Dermatológica', 200.00, 'Avaliação e tratamento de condições da pele.', TRUE),
+(2, 'Procedimento Estético', 350.00, 'Procedimentos estéticos não cirúrgicos.', TRUE);
+
 -- Inserindo atendimentos de teste
-INSERT INTO atendimentos (tipo, paciente_id, profissional_id, datahora, status) VALUES
-('Consulta', 1, 1, '2026-04-15 12:00:00', 'Agendado'),
-('Consulta', 2, 2, '2026-04-16 16:00:00', 'Agendado'),
-('Procedimento', 1, 2, '2026-04-20 12:00:00', 'Concluído');
+INSERT INTO atendimentos (tipo, paciente_id, profissional_id, datahora, status, preco, disponibilidade_id) VALUES
+('Consulta', 1, 1, '2026-04-15 12:00:00', 'Agendado', 150.00, 1),
+('Consulta', 2, 2, '2026-04-16 16:00:00', 'Agendado', 200.00, 2),
+('Procedimento', 1, 2, '2026-04-20 12:00:00', 'Concluído', 350.00, 3);
 
 -- Inserindo observações de teste
 INSERT INTO observacoes_atendimento (atendimento_id, autor, texto, datahora) VALUES
 (1, 'Dr. Carlos Medico', 'Paciente apresenta sintomas de hipertensão. Necessário acompanhamento.', '2026-04-15 12:30:00'),
 (3, 'Dra. Ana Especialista', 'Procedimento realizado com sucesso. Sem intercorrências.', '2026-04-20 12:45:00');
-

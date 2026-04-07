@@ -17,12 +17,14 @@
             <div class="erro">
                 <strong>❌ Erro:</strong> ${erro}
             </div>
+            <c:remove var="erro" scope="session"/>
         </c:if>
 
         <c:if test="${not empty sucesso}">
             <div class="sucesso">
                 <strong>✓ Sucesso:</strong> ${sucesso}
             </div>
+            <c:remove var="sucesso" scope="session"/>
         </c:if>
 
         <form method="POST" action="${pageContext.request.contextPath}/CadastroServlet">
