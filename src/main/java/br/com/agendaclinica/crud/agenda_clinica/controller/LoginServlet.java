@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import br.com.agendaclinica.crud.agenda_clinica.model.Usuario;
 import br.com.agendaclinica.crud.agenda_clinica.dao.UsuarioDAO;
+import br.com.agendaclinica.crud.agenda_clinica.util.SecurityUtil;
 import java.io.IOException;
 
 @WebServlet("/LoginServlet")
@@ -19,18 +20,38 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
 
+        // Validar entradas
+        if (email == null || email.trim().isEmpty() || senha == null || senha.trim().isEmpty()) {
+            HttpSession session = request.getSession();
+            session.setAttribute("erro", "Email e senha são obrigatórios!");
+            SecurityUtil.registrarAuditoria(email != null ? email : "UNKNOWN", "Login - Campos vazios", false);
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+
+        // Sanitizar entrada (proteção contra SQL Injection - Hibernate usa Prepared Statements)
+        if (!SecurityUtil.isSafeInput(email) || !SecurityUtil.isSafeInput(senha)) {
+            HttpSession session = request.getSession();
+            session.setAttribute("erro", "Entrada contém caracteres inválidos!");
+            SecurityUtil.registrarAuditoria(email, "Login - Entrada suspeita", false);
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+
         try {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
-            Usuario usuario = usuarioDAO.buscarPorEmailESenha(email, senha);
+            Usuario usuario = usuarioDAO.buscarPorEmail(email);
 
-            if (usuario != null) {
+            if (usuario != null && usuario.validarSenha(senha)) {
                 // Login bem-sucedido
                 HttpSession session = request.getSession();
                 session.setAttribute("usuarioId", usuario.getId());
-                session.setAttribute("usuarioNome", usuario.getNome());
+                session.setAttribute("usuarioNome", SecurityUtil.escaparXSS(usuario.getNome()));
                 session.setAttribute("usuarioCategoria", usuario.getCategoria());
                 session.setAttribute("usuarioEmail", usuario.getEmail());
                 session.setAttribute("logado", true);
+
+                SecurityUtil.registrarAuditoria(usuario.getEmail(), "Login bem-sucedido", true);
 
                 // Redirecionar de acordo com a categoria
                 if (usuario.getCategoria() == 1) {
@@ -39,18 +60,23 @@ public class LoginServlet extends HttpServlet {
                 } else if (usuario.getCategoria() == 2) {
                     // Médico/Profissional
                     response.sendRedirect(request.getContextPath() + "/dashboard-medico.jsp");
+                } else if (usuario.getCategoria() == 0) {
+                    // Admin
+                    response.sendRedirect(request.getContextPath() + "/dashboard-admin.jsp");
                 }
             } else {
                 // Login inválido
                 HttpSession session = request.getSession();
                 session.setAttribute("erro", "Email ou senha inválidos!");
+                SecurityUtil.registrarAuditoria(email, "Login - Credenciais inválidas", false);
                 response.sendRedirect(request.getContextPath() + "/login.jsp");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             HttpSession session = request.getSession();
-            session.setAttribute("erro", "Erro ao realizar login: " + e.getMessage());
+            session.setAttribute("erro", "Erro ao realizar login!");
+            SecurityUtil.registrarAuditoria(email, "Login - Erro na aplicação", false);
             response.sendRedirect(request.getContextPath() + "/login.jsp");
         }
     }

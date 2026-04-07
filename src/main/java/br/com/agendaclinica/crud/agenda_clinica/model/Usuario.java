@@ -1,6 +1,7 @@
 package br.com.agendaclinica.crud.agenda_clinica.model;
 
 import jakarta.persistence.*;
+import br.com.agendaclinica.crud.agenda_clinica.util.SecurityUtil;
 
 @Entity
 @Table(name = "usuarios") // Nome da tabela que vai ser criada na DB -> Usuarios
@@ -17,7 +18,7 @@ public class Usuario {
     private String email;
 
     @Column(nullable = false)
-    private String senha;
+    private String senha; // Armazenada em BCrypt
 
     @Column(nullable = false)
     private Integer categoria; // 0 = Admin, 1 = Paciente, 2 = Profissional/Médico
@@ -34,7 +35,7 @@ public class Usuario {
     public Usuario(String nome, String email, String senha, Integer categoria) {
         this.nome = nome;
         this.email = email;
-        this.senha = senha;
+        this.senha = SecurityUtil.criptografarSenha(senha); // Criptografa automaticamente
         this.categoria = categoria;
     }
 
@@ -45,11 +46,22 @@ public class Usuario {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public String getSenha() { return senha; }
-    public void setSenha(String senha) { this.senha = senha; }
+    public void setSenha(String senha) { 
+        this.senha = SecurityUtil.criptografarSenha(senha); // Criptografa ao definir
+    }
     public Integer getCategoria() { return categoria; }
     public void setCategoria(Integer categoria) { this.categoria = categoria; }
     public Long getPacienteId() { return pacienteId; }
     public void setPacienteId(Long pacienteId) { this.pacienteId = pacienteId; }
     public Long getProfissionalId() { return profissionalId; }
     public void setProfissionalId(Long profissionalId) { this.profissionalId = profissionalId; }
+    
+    /**
+     * Valida senha sem criptografar novamente
+     * @param senhaPlana Senha em texto plano
+     * @return true se a senha corresponde
+     */
+    public boolean validarSenha(String senhaPlana) {
+        return SecurityUtil.validarSenha(senhaPlana, this.senha);
+    }
 }

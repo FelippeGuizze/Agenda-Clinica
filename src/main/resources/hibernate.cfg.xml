@@ -12,5 +12,6 @@
         <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.Profissional"/>
         <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.Atendimento"/>
         <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.ObservacaoAtendimento"/>
+        <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.DisponibilidadeProfissional"/>
     </session-factory>
 </hibernate-configuration>

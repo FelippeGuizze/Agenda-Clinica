@@ -58,6 +58,18 @@
 	    <version>6.0.0</version>
 	    <scope>provided</scope>
 	</dependency>
+	<!-- BCrypt para criptografia de senhas -->
+	<dependency>
+	    <groupId>at.favre.lib</groupId>
+	    <artifactId>bcrypt</artifactId>
+	    <version>0.10.2</version>
+	</dependency>
+	<!-- OWASP Encoder para proteção contra XSS -->
+	<dependency>
+	    <groupId>org.owasp.encoder</groupId>
+	    <artifactId>encoder</artifactId>
+	    <version>1.2.3</version>
+	</dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
