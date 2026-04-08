@@ -16,7 +16,7 @@ Este projeto envolve várias áreas do conhecimento de Java Web Application, des
 - **Autenticação por Usuário**: O painel possui diferentes níveis de acesso e fluxos de login para pacientes, médicos e administradores.
 - **Segurança com BCrypt**: As senhas são protegidas no banco de dados através de algoritmos de hash criptográfico.
 - **Sistema de Agendamento:** Sistema avançado de horários usando o seletor nativo do navegador `[datetime-local]`, integrado diretamente no painel do médico.
-- **Relatórios Financeiros Dinâmicos (Admin):** Gráficos de barras via AJAX usando `Chart.js` (CDN), exibindo o faturamento bruto x líquido filtrados por ano, com base nos dados reais do banco.
+- **Relatórios Financeiros Dinâmicos (Admin):** Gráficos de barras via AJAX usando `Chart.js` (CDN).
 - **Cancelamento Inteligente:** Pacientes podem cancelar consultas sem comprometer a integridade dos dados; o horário é automaticamente re-disponibilizado para outros pacientes.
 - **Utilitário de Backup:** Motor de serialização completo do banco de dados em formato `JSON`, gerado via administrador e recuperável através do mesmo painel.
 
