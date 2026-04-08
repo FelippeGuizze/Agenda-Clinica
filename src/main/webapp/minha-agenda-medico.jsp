@@ -43,7 +43,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="tipo">Tipo do Atendimento (ex: Consulta Geral, Exame de Sangue):</label>
+                    <label for="classe_heranca">Classe do Atendimento (Herança):</label>
+                    <select id="classe_heranca" name="classe_heranca" required>
+                        <option value="" disabled selected>-- Selecione a Classe --</option>
+                        <option value="Consulta">Consulta (Atendimento clínico)</option>
+                        <option value="Exame">Exame (Procedimento diagnóstico)</option>
+                    </select>
+                    <small style="color: #aaa;">Define o comportamento polimórfico e o cálculo de custo do atendimento.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="tipo">Descrição do Atendimento (ex: Consulta Geral, Exame de Sangue):</label>
                     <input type="text" id="tipo" name="tipo" placeholder="Nome que o paciente verá" required>
                 </div>
 

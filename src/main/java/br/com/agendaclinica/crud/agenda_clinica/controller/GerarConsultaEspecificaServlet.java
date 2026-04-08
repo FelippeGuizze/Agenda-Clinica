@@ -33,13 +33,14 @@ public class GerarConsultaEspecificaServlet extends HttpServlet {
 
         try {
             Long profissionalId = (Long) session.getAttribute("profissionalId");
-            String datahoraStr = request.getParameter("datahora"); // vem no formato YYYY-MM-DDTHH:mm
+            String datahoraStr = request.getParameter("datahora");
             String tipo = request.getParameter("tipo");
             String precoStr = request.getParameter("preco");
             String orientacaoExtra = request.getParameter("orientacao");
+            String classeHeranca = request.getParameter("classe_heranca"); // "Consulta" ou "Exame"
 
-            if (datahoraStr == null || tipo == null || precoStr == null) {
-                session.setAttribute("erro", "Preencha todos os campos do calendário!");
+            if (datahoraStr == null || tipo == null || precoStr == null || classeHeranca == null) {
+                session.setAttribute("erro", "Preencha todos os campos, incluindo a Classe do Atendimento!");
                 response.sendRedirect(request.getContextPath() + "/minha-agenda-medico.jsp");
                 return;
             }
@@ -52,12 +53,12 @@ public class GerarConsultaEspecificaServlet extends HttpServlet {
 
             AtendimentoDAO atendimentoDAO = new AtendimentoDAO();
             
-            // Factory Manual Baseada na string via Polimorfismo SingleTable
+            // Factory explícita baseada na classe de herança selecionada pelo médico
             Atendimento novoAtendimento;
-            if (tipo.toLowerCase().contains("exame")) {
+            if ("Exame".equalsIgnoreCase(classeHeranca)) {
                 novoAtendimento = new Exame(
                     tipo,
-                    null, // sem paciente = Disponível pra reserva
+                    null,
                     profissional,
                     dataHora,
                     "Disponível",
@@ -65,9 +66,10 @@ public class GerarConsultaEspecificaServlet extends HttpServlet {
                     null
                 );
             } else {
+                // Padrão: Consulta
                 novoAtendimento = new Consulta(
                     tipo,
-                    null, // sem paciente = Disponível pra reserva
+                    null,
                     profissional,
                     dataHora,
                     "Disponível",
