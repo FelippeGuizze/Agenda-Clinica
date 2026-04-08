@@ -13,8 +13,8 @@
     <div class="container">
         <h1>Agenda Clínica</h1>
         <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
-            <button class="botao botao-cadastro" onclick="location.href='${pageContext.request.contextPath}/cadastro.jsp'">Cadastro</button>
-            <button class="botao botao-login" onclick="location.href='${pageContext.request.contextPath}/login.jsp'">Login</button>
+            <button class="botao botao-cadastro" style="width: 250px;" onclick="location.href='${pageContext.request.contextPath}/cadastro.jsp'">Cadastro</button>
+            <button class="botao botao-login" style="width: 250px;" onclick="location.href='${pageContext.request.contextPath}/login.jsp'">Login</button>
         </div>
     </div>
 </body>

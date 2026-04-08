@@ -33,6 +33,7 @@ CREATE TABLE atendimentos (
     datahora DATETIME NOT NULL,
     status VARCHAR(50) NOT NULL,
     preco DECIMAL(10,2) NULL,
+    orientacao_medico TEXT NULL,
     FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
     FOREIGN KEY (profissional_id) REFERENCES profissionais(id)
 );

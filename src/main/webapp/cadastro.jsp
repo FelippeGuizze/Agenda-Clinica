@@ -60,7 +60,16 @@
 
             <div class="form-group" id="especialidade-group" style="display: none;">
                 <label for="especialidade">Especialidade:</label>
-                <input type="text" id="especialidade" name="especialidade" placeholder="Ex: Cardiologia, Dermatologia">
+                <select id="especialidade" name="especialidade">
+                    <option value="" disabled selected>-- Escolha a Especialidade --</option>
+                    <option value="Clínico Geral">Clínico Geral</option>
+                    <option value="Cardiologia">Cardiologia</option>
+                    <option value="Dermatologia">Dermatologia</option>
+                    <option value="Neurologia">Neurologia</option>
+                    <option value="Ortopedia">Ortopedia</option>
+                    <option value="Pediatria">Pediatria</option>
+                    <option value="Psiquiatria">Psiquiatria</option>
+                </select>
             </div>
 
             <button type="submit" class="btn-submit">Criar Conta</button>

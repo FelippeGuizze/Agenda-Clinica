@@ -45,17 +45,18 @@
                         <tr style="border-bottom: 2px solid #00d4ff;">
                             <th style="padding: 12px; text-align: left;">Profissional</th>
                             <th style="padding: 12px; text-align: left;">Especialidade</th>
-                            <th style="padding: 12px; text-align: left;">Tipo</th>
+                            <th style="padding: 12px; text-align: left; min-width: 180px;">Tipo</th>
                             <th style="padding: 12px; text-align: left;">Data/Hora</th>
                             <th style="padding: 12px; text-align: left;">Preço Calculado</th>
                             <th style="padding: 12px; text-align: left;">Status</th>
                             <th style="padding: 12px; text-align: left;">Orientações</th>
+                            <th style="padding: 12px; text-align: center;">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Será preenchida dinamicamente -->
                         <tr>
-                            <td colspan="7" style="padding: 20px; text-align: center; color: #aaa;">
+                            <td colspan="8" style="padding: 20px; text-align: center; color: #aaa;">
                                 Carregando suas consultas...
                             </td>
                         </tr>
@@ -82,7 +83,7 @@
                 })
                 .catch(error => {
                     console.error('Erro ao carregar consultas:', error);
-                    document.querySelector('tbody').innerHTML = '<tr><td colspan="7" style="padding: 20px; text-align: center; color: #ff6b6b;">Erro ao carregar dados</td></tr>';
+                    document.querySelector('tbody').innerHTML = '<tr><td colspan="8" style="padding: 20px; text-align: center; color: #ff6b6b;">Erro ao carregar dados</td></tr>';
                 });
         }
     </script>

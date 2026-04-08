@@ -77,4 +77,15 @@ public class UsuarioDAO {
             return null;
         }
     }
+
+    public java.util.List<Usuario> listarTodos() {
+        try (Session session = factory.openSession()) {
+            Query<Usuario> query = session.createQuery("FROM Usuario", Usuario.class);
+            return query.list();
+        } catch (Exception e) {
+            System.err.println("Erro ao listar todos os usuários: " + e.getMessage());
+            e.printStackTrace();
+            return java.util.List.of();
+        }
+    }
 }

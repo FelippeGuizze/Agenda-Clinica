@@ -86,4 +86,17 @@ public class AtendimentoDAO {
             e.printStackTrace();
         }
     }
+
+    public List<Atendimento> listarTodos() {
+        try (Session session = factory.openSession()) {
+            Query<Atendimento> query = session.createQuery(
+                "FROM Atendimento",
+                Atendimento.class
+            );
+            return query.list();
+        } catch (Exception e) {
+            System.err.println("Erro ao listar atendimentos: " + e.getMessage());
+            return List.of();
+        }
+    }
 }

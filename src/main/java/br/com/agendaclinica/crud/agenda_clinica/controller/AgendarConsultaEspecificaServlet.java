@@ -25,7 +25,7 @@ public class AgendarConsultaEspecificaServlet extends HttpServlet {
         if (session.getAttribute("usuarioCategoria") == null ||
             !session.getAttribute("usuarioCategoria").equals(1)) {
             session.setAttribute("erro", "❌ Acesso negado! Apenas pacientes podem agendar consultas.");
-            response.sendRedirect(request.getContextPath() + "/dashboard-paciente.jsp");
+            response.sendRedirect(request.getContextPath() + "/agendar-atendimento.jsp");
             return;
         }
 
@@ -33,7 +33,7 @@ public class AgendarConsultaEspecificaServlet extends HttpServlet {
             String atendimentoIdStr = request.getParameter("atendimentoId");
             if (atendimentoIdStr == null || atendimentoIdStr.trim().isEmpty()) {
                 session.setAttribute("erro", "ID da consulta não informado!");
-                response.sendRedirect(request.getContextPath() + "/dashboard-paciente.jsp");
+                response.sendRedirect(request.getContextPath() + "/agendar-atendimento.jsp");
                 return;
             }
 
@@ -47,14 +47,14 @@ public class AgendarConsultaEspecificaServlet extends HttpServlet {
             Atendimento consulta = atendimentoDAO.buscarPorId(atendimentoId);
             if (consulta == null) {
                 session.setAttribute("erro", "Consulta não encontrada!");
-                response.sendRedirect(request.getContextPath() + "/dashboard-paciente.jsp");
+                response.sendRedirect(request.getContextPath() + "/agendar-atendimento.jsp");
                 return;
             }
 
             // Verificar se ainda está disponível
             if (!"Disponível".equals(consulta.getStatus())) {
                 session.setAttribute("erro", "Esta consulta não está mais disponível!");
-                response.sendRedirect(request.getContextPath() + "/dashboard-paciente.jsp");
+                response.sendRedirect(request.getContextPath() + "/agendar-atendimento.jsp");
                 return;
             }
 
@@ -62,7 +62,7 @@ public class AgendarConsultaEspecificaServlet extends HttpServlet {
             Paciente paciente = pacienteDAO.buscarPorId(pacienteId);
             if (paciente == null) {
                 session.setAttribute("erro", "Dados do paciente não encontrados!");
-                response.sendRedirect(request.getContextPath() + "/dashboard-paciente.jsp");
+                response.sendRedirect(request.getContextPath() + "/agendar-atendimento.jsp");
                 return;
             }
 
@@ -79,7 +79,7 @@ public class AgendarConsultaEspecificaServlet extends HttpServlet {
             );
 
             session.setAttribute("sucesso", "Consulta agendada com sucesso!");
-            response.sendRedirect(request.getContextPath() + "/dashboard-paciente.jsp");
+            response.sendRedirect(request.getContextPath() + "/agendar-atendimento.jsp");
 
         } catch (NumberFormatException e) {
             session.setAttribute("erro", "ID inválido!");
@@ -88,7 +88,7 @@ public class AgendarConsultaEspecificaServlet extends HttpServlet {
                 "Tentativa de agendar consulta com ID inválido",
                 false
             );
-            response.sendRedirect(request.getContextPath() + "/dashboard-paciente.jsp");
+            response.sendRedirect(request.getContextPath() + "/agendar-atendimento.jsp");
         } catch (Exception e) {
             e.printStackTrace();
             session.setAttribute("erro", "Erro ao agendar consulta!");
@@ -97,7 +97,7 @@ public class AgendarConsultaEspecificaServlet extends HttpServlet {
                 "Erro ao agendar consulta",
                 false
             );
-            response.sendRedirect(request.getContextPath() + "/dashboard-paciente.jsp");
+            response.sendRedirect(request.getContextPath() + "/agendar-atendimento.jsp");
         }
     }
 }

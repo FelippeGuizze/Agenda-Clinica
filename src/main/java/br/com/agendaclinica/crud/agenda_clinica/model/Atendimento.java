@@ -37,6 +37,9 @@ public abstract class Atendimento {
     @Column(name = "disponibilidade_id")
     private Long disponibilidadeId; // Link para a disponibilidade usada
 
+    @Column(name = "orientacao_medico", columnDefinition = "TEXT", nullable = true)
+    private String orientacaoMedico; // Orientações extras e independentes do polimorfismo inseridas pelo profissional
+
     // Construtores
     public Atendimento() {}
 
@@ -75,6 +78,8 @@ public abstract class Atendimento {
     public void setPreco(BigDecimal preco) { this.preco = preco; }
     public Long getDisponibilidadeId() { return disponibilidadeId; }
     public void setDisponibilidadeId(Long disponibilidadeId) { this.disponibilidadeId = disponibilidadeId; }
+    public String getOrientacaoMedico() { return orientacaoMedico; }
+    public void setOrientacaoMedico(String orientacaoMedico) { this.orientacaoMedico = orientacaoMedico; }
 
     // Métodos Abstratos obrigatórios vindos dos requisitos de Polimorfismo e Override
     public abstract BigDecimal calcularCusto();

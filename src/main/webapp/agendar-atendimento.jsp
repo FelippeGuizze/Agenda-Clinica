@@ -45,7 +45,7 @@
                         <tr style="border-bottom: 2px solid #00d4ff;">
                             <th style="padding: 12px; text-align: left;">Profissional</th>
                             <th style="padding: 12px; text-align: left;">Especialidade</th>
-                            <th style="padding: 12px; text-align: left;">Tipo</th>
+                            <th style="padding: 12px; text-align: left; min-width: 180px;">Tipo</th>
                             <th style="padding: 12px; text-align: left;">Data/Hora</th>
                             <th style="padding: 12px; text-align: left;">Preço</th>
                             <th style="padding: 12px; text-align: center;">Ação</th>

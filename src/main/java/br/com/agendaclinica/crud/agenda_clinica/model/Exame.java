@@ -30,6 +30,6 @@ public class Exame extends Atendimento {
 
     @Override
     public String gerarOrientacoes() {
-        return "Jejum obrigatório de 8 horas. Não ingerir álcool 24h antes.";
+        return "Orientações Gerais Padrões: Traga um documento com foto.";
     }
 }

@@ -54,7 +54,7 @@ public class ListarConsultasDisponiveisServlet extends HttpServlet {
                     "R$ " + consulta.calcularCusto().toString() : "A combinar";
 
                 String botaoAgendar = "<button type='button' onclick='agendarConsulta(" + consulta.getId() + ")' " +
-                    "style='background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: 600;'>Agendar</button>";
+                    "style='background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; display: inline-flex; align-items: center; justify-content: center; height: 35px; white-space: nowrap;'>Agendar</button>";
 
                 out.println("<tr style='border-bottom: 1px solid rgba(255, 255, 255, 0.1);'>");
                 out.println("<td style='padding: 12px;'>" + profissional.getNome() + "</td>");

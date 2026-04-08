@@ -52,6 +52,11 @@
                     <input type="number" id="preco" name="preco" step="0.01" min="0" required placeholder="150.00">
                 </div>
 
+                <div class="form-group">
+                    <label for="orientacao">Orientações Extras (Opcional):</label>
+                    <input type="text" id="orientacao" name="orientacao" placeholder="Ex: chegar 10 min antes, limite de idade...">
+                </div>
+
                 <button type="submit" class="btn-submit">Criar Horário Disponível</button>
             </form>
 

@@ -5,9 +5,11 @@ br/com/agendaclinica/crud/agenda_clinica/dao/TipoConsultaDAO.class
 br/com/agendaclinica/crud/agenda_clinica/controller/CadastroServlet.class
 br/com/agendaclinica/crud/agenda_clinica/model/DisponibilidadeProfissional.class
 br/com/agendaclinica/crud/agenda_clinica/controller/RemoverTipoConsultaServlet.class
+br/com/agendaclinica/crud/agenda_clinica/controller/ListarCustosTotaisServlet.class
 br/com/agendaclinica/crud/agenda_clinica/dao/UsuarioDAO.class
 br/com/agendaclinica/crud/agenda_clinica/controller/AgendarConsultaEspecificaServlet.class
 br/com/agendaclinica/crud/agenda_clinica/util/SeedService.class
+br/com/agendaclinica/crud/agenda_clinica/controller/RestaurarDatabaseServlet.class
 br/com/agendaclinica/crud/agenda_clinica/dao/ProfissionalDAO.class
 br/com/agendaclinica/crud/agenda_clinica/model/Usuario.class
 br/com/agendaclinica/crud/agenda_clinica/model/Exame.class
@@ -25,7 +27,10 @@ br/com/agendaclinica/crud/agenda_clinica/model/TipoConsulta.class
 br/com/agendaclinica/crud/agenda_clinica/controller/VerificaEmailServlet.class
 br/com/agendaclinica/crud/agenda_clinica/util/AppInitListener.class
 br/com/agendaclinica/crud/agenda_clinica/util/SecurityUtil.class
+br/com/agendaclinica/crud/agenda_clinica/controller/BackupDatabaseServlet.class
 br/com/agendaclinica/crud/agenda_clinica/controller/AdicionarTipoConsultaServlet.class
+br/com/agendaclinica/crud/agenda_clinica/controller/ListarUsuariosAdminServlet.class
+br/com/agendaclinica/crud/agenda_clinica/controller/GerarGraficoAdminServlet.class
 br/com/agendaclinica/crud/agenda_clinica/controller/UsuarioServlet.class
 br/com/agendaclinica/crud/agenda_clinica/controller/RemoverDisponibilidadeServlet.class
 br/com/agendaclinica/crud/agenda_clinica/dao/DisponibilidadeProfissionalDAO.class
@@ -35,5 +40,6 @@ br/com/agendaclinica/crud/agenda_clinica/controller/ListarDisponibilidadesServle
 br/com/agendaclinica/crud/agenda_clinica/util/HibernateUtil.class
 br/com/agendaclinica/crud/agenda_clinica/model/Consulta.class
 br/com/agendaclinica/crud/agenda_clinica/dao/ObservacaoAtendimentoDAO.class
+br/com/agendaclinica/crud/agenda_clinica/controller/CancelarAtendimentoServlet.class
 br/com/agendaclinica/crud/agenda_clinica/dao/PacienteDAO.class
 br/com/agendaclinica/crud/agenda_clinica/controller/LogoutServlet.class

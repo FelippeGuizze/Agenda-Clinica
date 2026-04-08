@@ -57,6 +57,9 @@ public class ListarMinhasConsultasServlet extends HttpServlet {
                 // Agora pegamos o valor da Regra de Negócio Polimórfica:
                 String precoFormatado = "R$ " + consulta.calcularCusto().toString();
                 String orientacoes = consulta.gerarOrientacoes();
+                if (consulta.getOrientacaoMedico() != null && !consulta.getOrientacaoMedico().isEmpty()) {
+                    orientacoes += " <br><span style='color:#ffffff; font-weight:bold;'>Observações do Dr.: </span><span style='color:#ffffff;'>" + consulta.getOrientacaoMedico() + "</span>";
+                }
 
                 String statusColor;
                 switch (consulta.getStatus()) {
@@ -77,6 +80,17 @@ public class ListarMinhasConsultasServlet extends HttpServlet {
                 out.println("<td style='padding: 12px; font-weight: 600; color: #00ff88;'>" + precoFormatado + "</td>");
                 out.println("<td style='padding: 12px;'>" + statusHtml + "</td>");
                 out.println("<td style='padding: 12px; font-size: 0.9em; color: #ffeb3b;'>" + orientacoes + "</td>");
+                
+                // COLUNA AÇÕES E CANCELAR
+                out.println("<td style='padding: 12px; text-align: center;'>");
+                if (consulta.getStatus().equals("Agendado")) {
+                    out.println("<form method='POST' action='" + request.getContextPath() + "/CancelarAtendimentoServlet' style='margin:0;'>");
+                    out.println("<input type='hidden' name='atendimentoId' value='" + consulta.getId() + "'/>");
+                    out.println("<button type='submit' style='background: #ff4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;'>Desmarcar</button>");
+                    out.println("</form>");
+                }
+                out.println("</td>");
+                
                 out.println("</tr>");
             }
 

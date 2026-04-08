@@ -15,8 +15,10 @@ Este projeto envolve várias áreas do conhecimento de Java Web Application, des
 ## Funcionalidades
 - **Autenticação por Usuário**: O painel possui diferentes níveis de acesso e fluxos de login para pacientes, médicos e administradores.
 - **Segurança com BCrypt**: As senhas são protegidas no banco de dados através de algoritmos de hash criptográfico.
-- **Agendamento Dinâmico**: O médico possui autonomia para disponibilizar horários específicos utilizando o calendário nativo do navegador (`datetime-local`).
-- **Seeding Service**: Ferramenta automatizada para popular o banco de dados com usuários iniciais ao detectar um banco vazio.
+- **Schedule System:** Advanced appointment system using `[datetime-local]` built directly into doctors' control panels.
+- **Dynamic Financial Reporting (Admin):** Visual AJAX-based Bar Charts built via CDN `Chart.js`, breaking down all internal operations filtered intelligently by year.
+- **Smart Cancelation:** Patients can asynchronously cancel appointments without breaking the integrity of the data; it re-offers the slot on the global available board instantly.
+- **System Backup Utility:** Full database local serialization engine returning pure `JSON` formatted states directly to the Administrator panel.
 
 ## Arquitetura
 - **Backend**: Java 21, Jakarta EE Servlets.

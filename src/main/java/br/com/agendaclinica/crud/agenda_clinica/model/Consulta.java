@@ -32,6 +32,6 @@ public class Consulta extends Atendimento {
 
     @Override
     public String gerarOrientacoes() {
-        return "Chegar com 15 minutos de antecedência. Trazer documento original com foto.";
+        return "Recomendações Gerais: Chegue com 15 minutos de antecedência na recepção.";
     }
 }

@@ -43,6 +43,8 @@ DIAGRAMA DE CLASSES E ACOPLAMENTO (UML TEXTUAL BASE)
 | - datahora: LocalDateTime                                 |
 | - status: String                                          |
 | - preco: BigDecimal                                       |
+| - orientacaoMedico: String                                |
+| - disponibilidadeId: Long                                 |
 | - observacoes: List<ObservacaoAtendimento>                |
 +-----------------------------------------------------------+
 | + abstract calcularCusto(): BigDecimal                    |

@@ -36,6 +36,7 @@ public class GerarConsultaEspecificaServlet extends HttpServlet {
             String datahoraStr = request.getParameter("datahora"); // vem no formato YYYY-MM-DDTHH:mm
             String tipo = request.getParameter("tipo");
             String precoStr = request.getParameter("preco");
+            String orientacaoExtra = request.getParameter("orientacao");
 
             if (datahoraStr == null || tipo == null || precoStr == null) {
                 session.setAttribute("erro", "Preencha todos os campos do calendário!");
@@ -73,6 +74,10 @@ public class GerarConsultaEspecificaServlet extends HttpServlet {
                     preco,
                     null
                 );
+            }
+
+            if (orientacaoExtra != null && !orientacaoExtra.trim().isEmpty()) {
+                novoAtendimento.setOrientacaoMedico(orientacaoExtra.trim());
             }
 
             atendimentoDAO.salvar(novoAtendimento);
