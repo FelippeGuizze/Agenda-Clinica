@@ -38,6 +38,25 @@ CREATE TABLE atendimentos (
     FOREIGN KEY (profissional_id) REFERENCES profissionais(id)
 );
 
+CREATE TABLE disponibilidade_profissionais (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    profissional_id BIGINT NOT NULL,
+    dia_semana VARCHAR(20) NOT NULL,
+    horario VARCHAR(10) NOT NULL,
+    ativo TINYINT(1) NOT NULL DEFAULT 1,
+    FOREIGN KEY (profissional_id) REFERENCES profissionais(id)
+);
+
+CREATE TABLE tipos_consulta (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    profissional_id BIGINT NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    preco DECIMAL(10,2) NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    ativo TINYINT(1) NOT NULL DEFAULT 1,
+    FOREIGN KEY (profissional_id) REFERENCES profissionais(id)
+);
+
 CREATE TABLE observacoes_atendimento (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     atendimento_id BIGINT NOT NULL,
