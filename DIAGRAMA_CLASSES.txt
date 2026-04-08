@@ -1,0 +1,82 @@
+=========================================
+DIAGRAMA DE CLASSES E ACOPLAMENTO (UML TEXTUAL BASE)
+=========================================
+
++-----------------------------------------------------------+
+|                          Usuario                          |
++-----------------------------------------------------------+
+| - id: Long                                                |
+| - nome: String                                            |
+| - email: String                                           |
+| - senha: String                                           |
+| - categoria: Integer                                      |
+| - pacienteId: Long                                        |
+| - profissionalId: Long                                    |
++-----------------------------------------------------------+
+| + getId(): Long                                           |
+| + validarSenha(senhaPlana: String): boolean               |
+| + setSenha(senha: String): void                           |
++-----------------------------------------------------------+
+       ^
+       | (Logical Mapping)
+       v
++-----------------------+              +-----------------------+
+|       Paciente        |              |     Profissional      |
++-----------------------+              +-----------------------+
+| - id: Long            |       1..*   | - id: Long            |
+| - nome: String        |<--------+    | - nome: String        |
+| - contato: String     |         |    | - categoria: String   |
++-----------------------+         |    | - especialidade: Str  |
+| + construct()         |         |    +-----------------------+
+| + getters/setters()   |         |    | + construct()         |
++-----------------------+         |    | + getters/setters()   |
+                                  |    +-----------------------+
+                                  |                 ^ 1
+                                * |                 |
++---------------------------------------------------+-------+
+|              <<Abstract>> Atendimento                     |
++-----------------------------------------------------------+
+| - id: Long                                                |
+| - tipo: String                                            |
+| - paciente: Paciente                                      |
+| - profissional: Profissional                              |
+| - datahora: LocalDateTime                                 |
+| - status: String                                          |
+| - preco: BigDecimal                                       |
+| - observacoes: List<ObservacaoAtendimento>                |
++-----------------------------------------------------------+
+| + abstract calcularCusto(): BigDecimal                    |
+| + abstract gerarOrientacoes(): String                     |
+| + adicionarObservacao(obs: ObservacaoAtendimento): void   |
+| + getters/setters()                                       |
++-----------------------------------------------------------+
+                             ^
+               <<Inheritance Single-Table>>
+                             |
+         +-------------------+-------------------+
+         |                                       |
++-----------------------+             +-----------------------+
+|        Consulta       |             |         Exame         |
++-----------------------+             +-----------------------+
+| - no_extra_fields     |             | - no_extra_fields     |
++-----------------------+             +-----------------------+
+| + calcularCusto()     |             | + calcularCusto()     |
+| + gerarOrientacoes()  |             | + gerarOrientacoes()  |
++-----------------------+             +-----------------------+
+
+-------------------------------------------------------------
+Relacionamento Secundário:
+-------------------------------------------------------------
+
++-----------------------------------------------------------+
+|                  ObservacaoAtendimento                    |
++-----------------------------------------------------------+
+| - id: Long                                                |
+| - atendimento: Atendimento                                |
+| - autor: String                                           |
+| - texto: String                                           |
+| - datahora: LocalDateTime                                 |
++-----------------------------------------------------------+
+| + construct(atendimento, autor, texto)                    |
+| + getters/setters()                                       |
++-----------------------------------------------------------+
