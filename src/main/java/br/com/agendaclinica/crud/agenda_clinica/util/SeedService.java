@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import br.com.agendaclinica.crud.agenda_clinica.model.Usuario;
+import br.com.agendaclinica.crud.agenda_clinica.model.Profissional;
 import br.com.agendaclinica.crud.agenda_clinica.model.DisponibilidadeProfissional;
 
 public class SeedService {
@@ -39,6 +40,35 @@ public class SeedService {
                 SecurityUtil.registrarAuditoria("admin@agenda.com", "Criação de admin", true);
             } else {
                 System.out.println("✓ Usuário administrador já existe no banco de dados.");
+            }
+
+            // Verificar se o médico de teste já existe
+            Query<Usuario> queryMedico = session.createQuery("FROM Usuario WHERE email = :email", Usuario.class);
+            queryMedico.setParameter("email", "medico@gmail.com");
+            
+            if (queryMedico.uniqueResult() == null) {
+                Transaction tMedico = session.beginTransaction();
+                
+                // Criar o profissional primeiro
+                Profissional profissional = new Profissional("Dr. Médico", "Médico", "Clínica Geral");
+                session.persist(profissional);
+                
+                // Criar o usuário atrelado ao profissional
+                Usuario medico = new Usuario(
+                    "Dr. Médico", 
+                    "medico@gmail.com", 
+                    "123123", 
+                    2  // 2 = Profissional
+                );
+                medico.setProfissionalId(profissional.getId());
+                
+                session.persist(medico);
+                tMedico.commit();
+                
+                System.out.println("✓ Usuário médico (Dr. Médico) criado com sucesso!");
+                SecurityUtil.registrarAuditoria("medico@gmail.com", "Criação de médico teste", true);
+            } else {
+                System.out.println("✓ Usuário médico de teste já existe no banco de dados.");
             }
 
             // Criar disponibilidades padrão (12:00 e 16:00 para todos os dias)

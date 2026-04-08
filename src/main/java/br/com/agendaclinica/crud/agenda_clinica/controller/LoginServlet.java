@@ -67,13 +67,13 @@ public class LoginServlet extends HttpServlet {
             } else if (usuario == null) {
                 // Email não existe
                 HttpSession session = request.getSession();
-                session.setAttribute("erro", "❌ Email não cadastrado no sistema!");
+                session.setAttribute("erro", "Email não cadastrado no sistema!");
                 SecurityUtil.registrarAuditoria(email, "Login - Email não encontrado", false);
                 response.sendRedirect(request.getContextPath() + "/login.jsp");
             } else {
                 // Senha incorreta
                 HttpSession session = request.getSession();
-                session.setAttribute("erro", "❌ Senha incorreta!");
+                session.setAttribute("erro", "Senha incorreta!");
                 SecurityUtil.registrarAuditoria(email, "Login - Senha incorreta", false);
                 response.sendRedirect(request.getContextPath() + "/login.jsp");
             }
