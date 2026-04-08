@@ -50,8 +50,8 @@ public class ListarConsultasDisponiveisServlet extends HttpServlet {
                 Profissional profissional = profissionalDAO.buscarPorId(consulta.getProfissional().getId());
 
                 String dataFormatada = consulta.getDatahora().format(formatter);
-                String precoFormatado = consulta.getPreco() != null ?
-                    "R$ " + consulta.getPreco().toString() : "A combinar";
+                String precoFormatado = consulta.calcularCusto() != null ?
+                    "R$ " + consulta.calcularCusto().toString() : "A combinar";
 
                 String botaoAgendar = "<button type='button' onclick='agendarConsulta(" + consulta.getId() + ")' " +
                     "style='background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: 600;'>Agendar</button>";

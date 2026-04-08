@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import br.com.agendaclinica.crud.agenda_clinica.model.Atendimento;
+import br.com.agendaclinica.crud.agenda_clinica.model.Consulta;
+import br.com.agendaclinica.crud.agenda_clinica.model.Exame;
 import br.com.agendaclinica.crud.agenda_clinica.model.Paciente;
 import br.com.agendaclinica.crud.agenda_clinica.model.Profissional;
 import br.com.agendaclinica.crud.agenda_clinica.dao.AtendimentoDAO;
@@ -84,8 +86,14 @@ public class AgendarAtendimentoServlet extends HttpServlet {
                 return;
             }
 
-            // Criar atendimento
-            Atendimento atendimento = new Atendimento(tipo, paciente, profissional, dataHora, "Agendado");
+            // Criar atendimento (Fábrica via Polimorfismo)
+            Atendimento atendimento;
+            if (tipo.toLowerCase().contains("exame")) {
+                atendimento = new Exame(tipo, paciente, profissional, dataHora, "Agendado");
+            } else {
+                atendimento = new Consulta(tipo, paciente, profissional, dataHora, "Agendado");
+            }
+            
             atendimentoDAO.salvar(atendimento);
 
             SecurityUtil.registrarAuditoria(

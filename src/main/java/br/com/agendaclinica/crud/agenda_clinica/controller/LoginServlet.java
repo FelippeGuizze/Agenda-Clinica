@@ -49,6 +49,8 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("usuarioNome", SecurityUtil.escaparXSS(usuario.getNome()));
                 session.setAttribute("usuarioCategoria", usuario.getCategoria());
                 session.setAttribute("usuarioEmail", usuario.getEmail());
+                session.setAttribute("profissionalId", usuario.getProfissionalId());
+                session.setAttribute("pacienteId", usuario.getPacienteId());
                 session.setAttribute("logado", true);
 
                 SecurityUtil.registrarAuditoria(usuario.getEmail(), "Login bem-sucedido", true);

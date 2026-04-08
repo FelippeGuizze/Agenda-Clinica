@@ -4,7 +4,9 @@
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/AgendarConsultaEspecificaServlet.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/CadastroServlet.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/DefineDisponibilidadeServlet.java
+/home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/GerarConsultaEspecificaServlet.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/GerarConsultasDisponiveisServlet.java
+/home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/ListarConsultaLivreMedicoServlet.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/ListarConsultasDisponiveisServlet.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/ListarDisponibilidadesServlet.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/ListarMinhasConsultasServlet.java
@@ -23,7 +25,9 @@
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/dao/TipoConsultaDAO.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/dao/UsuarioDAO.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/model/Atendimento.java
+/home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/model/Consulta.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/model/DisponibilidadeProfissional.java
+/home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/model/Exame.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/model/ObservacaoAtendimento.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/model/Paciente.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/model/Profissional.java

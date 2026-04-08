@@ -13,6 +13,8 @@ import br.com.agendaclinica.crud.agenda_clinica.dao.ProfissionalDAO;
 import br.com.agendaclinica.crud.agenda_clinica.model.DisponibilidadeProfissional;
 import br.com.agendaclinica.crud.agenda_clinica.model.TipoConsulta;
 import br.com.agendaclinica.crud.agenda_clinica.model.Atendimento;
+import br.com.agendaclinica.crud.agenda_clinica.model.Consulta;
+import br.com.agendaclinica.crud.agenda_clinica.model.Exame;
 import br.com.agendaclinica.crud.agenda_clinica.model.Profissional;
 import br.com.agendaclinica.crud.agenda_clinica.util.SecurityUtil;
 import java.io.IOException;
@@ -90,21 +92,34 @@ public class GerarConsultasDisponiveisServlet extends HttpServlet {
                         continue;
                     }
 
-                    // Criar consultas para cada tipo disponível
+                    // Criar consultas para cada tipo disponível (Polimorfismo aplicado na factory manual)
                     for (TipoConsulta tipo : tiposConsulta) {
                         if (!tipo.getAtivo()) continue;
 
-                        Atendimento consulta = new Atendimento(
-                            tipo.getNome(),
-                            null, // paciente = null (disponível)
-                            profissional,
-                            dataHora,
-                            "Disponível",
-                            tipo.getPreco(),
-                            disp.getId()
-                        );
+                        Atendimento atendimentoAgendado;
+                        if (tipo.getNome().toLowerCase().contains("exame")) {
+                            atendimentoAgendado = new Exame(
+                                tipo.getNome(),
+                                null, // paciente = null (disponível)
+                                profissional,
+                                dataHora,
+                                "Disponível",
+                                tipo.getPreco(),
+                                disp.getId()
+                            );
+                        } else {
+                            atendimentoAgendado = new Consulta(
+                                tipo.getNome(),
+                                null,
+                                profissional,
+                                dataHora,
+                                "Disponível",
+                                tipo.getPreco(),
+                                disp.getId()
+                            );
+                        }
 
-                        atendimentoDAO.salvar(consulta);
+                        atendimentoDAO.salvar(atendimentoAgendado);
                         consultasGeradas++;
                     }
                 }

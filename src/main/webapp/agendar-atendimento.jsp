@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/>
 </head>
 <body>
-    <div class="form-container">
+    <div class="table-container">
         <h1 style="font-size: 2em; margin-bottom: 30px;">Consultas Disponíveis</h1>
 
         <c:if test="${not empty erro}">

@@ -38,7 +38,7 @@ public class AgendarConsultaEspecificaServlet extends HttpServlet {
             }
 
             Long atendimentoId = Long.parseLong(atendimentoIdStr);
-            Long pacienteId = (Long) session.getAttribute("usuarioId");
+            Long pacienteId = (Long) session.getAttribute("pacienteId");
 
             AtendimentoDAO atendimentoDAO = new AtendimentoDAO();
             PacienteDAO pacienteDAO = new PacienteDAO();
@@ -78,7 +78,7 @@ public class AgendarConsultaEspecificaServlet extends HttpServlet {
                 true
             );
 
-            session.setAttribute("sucesso", "✓ Consulta agendada com sucesso!");
+            session.setAttribute("sucesso", "Consulta agendada com sucesso!");
             response.sendRedirect(request.getContextPath() + "/dashboard-paciente.jsp");
 
         } catch (NumberFormatException e) {

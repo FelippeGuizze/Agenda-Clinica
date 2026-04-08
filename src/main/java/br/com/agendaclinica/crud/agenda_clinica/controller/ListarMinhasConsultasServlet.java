@@ -26,26 +26,37 @@ public class ListarMinhasConsultasServlet extends HttpServlet {
         // Verificar se é paciente
         if (session.getAttribute("usuarioCategoria") == null ||
             !session.getAttribute("usuarioCategoria").equals(1)) {
-            out.println("<tr><td colspan='6' style='padding: 10px; text-align: center; color: #ff6b6b;'>Acesso negado</td></tr>");
+            out.println("<tr><td colspan='7' style='padding: 10px; text-align: center; color: #ff6b6b;'>Acesso negado</td></tr>");
             return;
         }
 
         try {
-            Long pacienteId = (Long) session.getAttribute("usuarioId");
+            Long pacienteId = (Long) session.getAttribute("pacienteId");
             AtendimentoDAO atendimentoDAO = new AtendimentoDAO();
             List<Atendimento> minhasConsultas = atendimentoDAO.buscarPorPaciente(pacienteId);
 
             if (minhasConsultas.isEmpty()) {
-                out.println("<tr><td colspan='6' style='padding: 20px; text-align: center; color: #aaa;'>Você ainda não tem consultas agendadas</td></tr>");
+                out.println("<tr><td colspan='7' style='padding: 20px; text-align: center; color: #aaa;'>Você ainda não tem consultas agendadas</td></tr>");
                 return;
             }
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
+            // DEMONSTRAÇÃO EXIGIDA PELO PROFESSOR (Polimorfismo numa coleção usando métodos overridden)
+            System.out.println("====== DEMONSTRAÇÃO DE POLIMORFISMO ======");
+            for (Atendimento att : minhasConsultas) {
+                System.out.println("Atendimento ID: " + att.getId() + " | Tipo Obj: " + att.getClass().getSimpleName());
+                System.out.println("- Custo Calculado: R$ " + att.calcularCusto());
+                System.out.println("- Orientações: " + att.gerarOrientacoes());
+            }
+            System.out.println("==========================================");
+
             for (Atendimento consulta : minhasConsultas) {
                 String dataFormatada = consulta.getDatahora().format(formatter);
-                String precoFormatado = consulta.getPreco() != null ?
-                    "R$ " + consulta.getPreco().toString() : "A combinar";
+                
+                // Agora pegamos o valor da Regra de Negócio Polimórfica:
+                String precoFormatado = "R$ " + consulta.calcularCusto().toString();
+                String orientacoes = consulta.gerarOrientacoes();
 
                 String statusColor;
                 switch (consulta.getStatus()) {
@@ -65,12 +76,13 @@ public class ListarMinhasConsultasServlet extends HttpServlet {
                 out.println("<td style='padding: 12px;'>" + dataFormatada + "</td>");
                 out.println("<td style='padding: 12px; font-weight: 600; color: #00ff88;'>" + precoFormatado + "</td>");
                 out.println("<td style='padding: 12px;'>" + statusHtml + "</td>");
+                out.println("<td style='padding: 12px; font-size: 0.9em; color: #ffeb3b;'>" + orientacoes + "</td>");
                 out.println("</tr>");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            out.println("<tr><td colspan='6' style='padding: 10px; text-align: center; color: #ff6b6b;'>Erro ao carregar suas consultas</td></tr>");
+            out.println("<tr><td colspan='7' style='padding: 10px; text-align: center; color: #ff6b6b;'>Erro ao carregar suas consultas</td></tr>");
         }
     }
 }

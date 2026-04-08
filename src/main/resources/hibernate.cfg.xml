@@ -11,6 +11,8 @@
         <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.Paciente"/>
         <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.Profissional"/>
         <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.Atendimento"/>
+        <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.Consulta"/>
+        <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.Exame"/>
         <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.ObservacaoAtendimento"/>
         <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.DisponibilidadeProfissional"/>
         <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.TipoConsulta"/>

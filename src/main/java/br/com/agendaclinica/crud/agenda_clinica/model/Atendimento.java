@@ -6,7 +6,9 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "atendimentos")
-public class Atendimento {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_classe", discriminatorType = DiscriminatorType.STRING)
+public abstract class Atendimento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +18,7 @@ public class Atendimento {
     private String tipo;
 
     @ManyToOne
-    @JoinColumn(name = "paciente_id", nullable = false)
+    @JoinColumn(name = "paciente_id", nullable = true)
     private Paciente paciente;
 
     @ManyToOne
@@ -73,4 +75,8 @@ public class Atendimento {
     public void setPreco(BigDecimal preco) { this.preco = preco; }
     public Long getDisponibilidadeId() { return disponibilidadeId; }
     public void setDisponibilidadeId(Long disponibilidadeId) { this.disponibilidadeId = disponibilidadeId; }
+
+    // Métodos Abstratos obrigatórios vindos dos requisitos de Polimorfismo e Override
+    public abstract BigDecimal calcularCusto();
+    public abstract String gerarOrientacoes();
 }

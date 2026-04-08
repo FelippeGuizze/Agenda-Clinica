@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/>
 </head>
 <body>
-    <div class="form-container">
+    <div class="table-container">
         <h1 style="font-size: 2em; margin-bottom: 30px;">Minhas Consultas Agendadas</h1>
 
         <c:if test="${not empty erro}">
@@ -47,14 +47,15 @@
                             <th style="padding: 12px; text-align: left;">Especialidade</th>
                             <th style="padding: 12px; text-align: left;">Tipo</th>
                             <th style="padding: 12px; text-align: left;">Data/Hora</th>
-                            <th style="padding: 12px; text-align: left;">Preço</th>
+                            <th style="padding: 12px; text-align: left;">Preço Calculado</th>
                             <th style="padding: 12px; text-align: left;">Status</th>
+                            <th style="padding: 12px; text-align: left;">Orientações</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Será preenchida dinamicamente -->
                         <tr>
-                            <td colspan="6" style="padding: 20px; text-align: center; color: #aaa;">
+                            <td colspan="7" style="padding: 20px; text-align: center; color: #aaa;">
                                 Carregando suas consultas...
                             </td>
                         </tr>
@@ -81,7 +82,7 @@
                 })
                 .catch(error => {
                     console.error('Erro ao carregar consultas:', error);
-                    document.querySelector('tbody').innerHTML = '<tr><td colspan="6" style="padding: 20px; text-align: center; color: #ff6b6b;">Erro ao carregar dados</td></tr>';
+                    document.querySelector('tbody').innerHTML = '<tr><td colspan="7" style="padding: 20px; text-align: center; color: #ff6b6b;">Erro ao carregar dados</td></tr>';
                 });
         }
     </script>
