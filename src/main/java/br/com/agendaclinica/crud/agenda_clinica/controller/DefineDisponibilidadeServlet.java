@@ -34,18 +34,17 @@ public class DefineDisponibilidadeServlet extends HttpServlet {
             Long profissionalId = (Long) session.getAttribute("usuarioId");
 
             // Validações
-            if (dia == null || horario == null || dia.trim().isEmpty() || horario.trim().isEmpty()) {
-                session.setAttribute("erro", "Todos os campos são obrigatórios!");
+            if (horario == null || horario.trim().isEmpty()) {
+                session.setAttribute("erro", "O horário é obrigatório!");
                 response.sendRedirect(request.getContextPath() + "/disponibilidade-profissional.jsp");
                 return;
             }
 
             // Sanitizar entrada
-            dia = dia.trim();
             horario = horario.trim();
 
             // Proteger contra SQL Injection e XSS
-            if (!SecurityUtil.isSafeInput(dia) || !SecurityUtil.isSafeInput(horario)) {
+            if (!SecurityUtil.isSafeInput(horario)) {
                 session.setAttribute("erro", "Entrada contém caracteres inválidos!");
                 SecurityUtil.registrarAuditoria(
                     (String) session.getAttribute("usuarioEmail"), 
@@ -63,26 +62,9 @@ public class DefineDisponibilidadeServlet extends HttpServlet {
                 return;
             }
 
-            // Validar dia da semana
-            String[] diasValidos = {"SEGUNDA", "TERÇA", "QUARTA", "QUINTA", "SEXTA", "SABADO", "DOMINGO"};
-            boolean diaValido = false;
-            for (String d : diasValidos) {
-                if (d.equals(dia)) {
-                    diaValido = true;
-                    break;
-                }
-            }
-
-            if (!diaValido) {
-                session.setAttribute("erro", "Dia da semana inválido!");
-                response.sendRedirect(request.getContextPath() + "/disponibilidade-profissional.jsp");
-                return;
-            }
-
             // Criar disponibilidade
             DisponibilidadeProfissional disponibilidade = new DisponibilidadeProfissional(
                 profissionalId, 
-                dia, 
                 horario
             );
             
@@ -97,7 +79,7 @@ public class DefineDisponibilidadeServlet extends HttpServlet {
 
             SecurityUtil.registrarAuditoria(
                 (String) session.getAttribute("usuarioEmail"), 
-                "Disponibilidade adicionada: " + dia + " - " + horario, 
+                "Disponibilidade adicionada: " + horario, 
                 true
             );
 

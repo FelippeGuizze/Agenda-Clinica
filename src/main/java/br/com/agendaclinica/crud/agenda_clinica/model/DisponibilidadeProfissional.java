@@ -17,8 +17,6 @@ public class DisponibilidadeProfissional {
     @Column(name = "profissional_id", nullable = false)
     private Long profissionalId;
 
-    @Column(nullable = false)
-    private String diaSemana; // "SEGUNDA", "TERÇA", "QUARTA", "QUINTA", "SEXTA", "SABADO", "DOMINGO"
 
     @Column(nullable = false)
     private String horario; // "08:00", "09:00", "10:00", etc
@@ -29,9 +27,8 @@ public class DisponibilidadeProfissional {
     // Construtores
     public DisponibilidadeProfissional() {}
 
-    public DisponibilidadeProfissional(Long profissionalId, String diaSemana, String horario) {
+    public DisponibilidadeProfissional(Long profissionalId, String horario) {
         this.profissionalId = profissionalId;
-        this.diaSemana = diaSemana;
         this.horario = horario;
         this.ativo = true;
     }
@@ -43,9 +40,7 @@ public class DisponibilidadeProfissional {
     public Long getProfissionalId() { return profissionalId; }
     public void setProfissionalId(Long profissionalId) { this.profissionalId = profissionalId; }
     
-    public String getDiaSemana() { return diaSemana; }
-    public void setDiaSemana(String diaSemana) { this.diaSemana = diaSemana; }
-    
+
     public String getHorario() { return horario; }
     public void setHorario(String horario) { this.horario = horario; }
     

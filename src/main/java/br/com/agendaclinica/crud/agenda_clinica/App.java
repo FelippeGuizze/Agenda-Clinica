@@ -21,11 +21,8 @@ public class App {
             // Teste inserindo dados
             Transaction t = session.beginTransaction();
             
-            Usuario novoUsuario = new Usuario("Uniedit Dev", "dev@uniedit.com", "123456", 0);
-            session.persist(novoUsuario);
-            
-            t.commit();
-            System.out.println("Usuário salvo com ID: " + novoUsuario.getId());
+            // t.commit(); // Remover inserção de teste
+            // System.out.println("Usuário salvo com ID: " + novoUsuario.getId());
             
         } catch (Exception e) {
             System.err.println("Erro na conexão: " + e.getMessage());

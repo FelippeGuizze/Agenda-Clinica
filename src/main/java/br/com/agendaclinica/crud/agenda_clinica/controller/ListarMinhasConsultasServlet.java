@@ -54,8 +54,15 @@ public class ListarMinhasConsultasServlet extends HttpServlet {
             for (Atendimento consulta : minhasConsultas) {
                 String dataFormatada = consulta.getDatahora().format(formatter);
                 
-                // Agora pegamos o valor da Regra de Negócio Polimórfica:
-                String precoFormatado = "R$ " + consulta.calcularCusto().toString();
+                // Agora pegamos o valor final gravado, ou o custo formatado antigo:
+                String precoFormatado;
+                if (consulta.getPrecoFinal() != null) {
+                    precoFormatado = "R$ " + consulta.getPrecoFinal().toString() + 
+                                     " <br><span style='font-size: 0.8em; color: #aaa;'>(Base: " + consulta.calcularCusto() + " + Taxa: " + consulta.getValorTaxa() + ")</span>";
+                } else {
+                    precoFormatado = "R$ " + consulta.calcularCusto().toString();
+                }
+
                 String orientacoes = consulta.gerarOrientacoes();
                 if (consulta.getOrientacaoMedico() != null && !consulta.getOrientacaoMedico().isEmpty()) {
                     orientacoes += " <br><span style='color:#ffffff; font-weight:bold;'>Observações do Dr.: </span><span style='color:#ffffff;'>" + consulta.getOrientacaoMedico() + "</span>";

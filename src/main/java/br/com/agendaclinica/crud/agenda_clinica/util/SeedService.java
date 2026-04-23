@@ -103,7 +103,6 @@ public class SeedService {
                     for (String horario : horarios) {
                         DisponibilidadeProfissional disponibilidade = new DisponibilidadeProfissional(
                             -1L, // -1 = disponibilidade padrão para todos
-                            dia,
                             horario
                         );
                         session.persist(disponibilidade);

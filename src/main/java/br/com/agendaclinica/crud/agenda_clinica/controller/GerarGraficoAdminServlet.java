@@ -33,17 +33,29 @@ public class GerarGraficoAdminServlet extends HttpServlet {
         }
 
         try {
-            int anoAlvo = java.time.LocalDate.now().getYear(); // Default
-            String anoParam = request.getParameter("ano");
-            if (anoParam != null && !anoParam.isEmpty()) {
-                anoAlvo = Integer.parseInt(anoParam);
-            }
-
             AtendimentoDAO atendimentoDAO = new AtendimentoDAO();
             List<Atendimento> todosAtendimentos = atendimentoDAO.listarTodos(); 
             
             // Descobrir quais anos possuem faturamento para popular o Select no front
             java.util.Set<Integer> anosDisponiveisSet = new java.util.TreeSet<>(java.util.Collections.reverseOrder());
+
+            for (Atendimento att : todosAtendimentos) {
+                if (att.getPaciente() != null && !att.getStatus().equalsIgnoreCase("Cancelado")) {
+                    anosDisponiveisSet.add(att.getDatahora().getYear());
+                }
+            }
+
+            if (anosDisponiveisSet.isEmpty()) {
+                anosDisponiveisSet.add(java.time.LocalDate.now().getYear());
+            }
+
+            int anoAlvo;
+            String anoParam = request.getParameter("ano");
+            if (anoParam != null && !anoParam.isEmpty()) {
+                anoAlvo = Integer.parseInt(anoParam);
+            } else {
+                anoAlvo = anosDisponiveisSet.iterator().next(); // Pega o ano mais recente disponível
+            }
 
             // Inicializar array de 12 meses
             BigDecimal[] faturamentoLiquido = new BigDecimal[12];
@@ -57,10 +69,6 @@ public class GerarGraficoAdminServlet extends HttpServlet {
             BigDecimal totalAnoBruto = BigDecimal.ZERO;
 
             for (Atendimento att : todosAtendimentos) {
-                // Salvar o ano pro dropdown
-                if (att.getPaciente() != null && !att.getStatus().equalsIgnoreCase("Cancelado")) {
-                    anosDisponiveisSet.add(att.getDatahora().getYear());
-                }
 
                 // Filtra pelo ano
                 if (att.getDatahora().getYear() == anoAlvo) {
@@ -69,7 +77,8 @@ public class GerarGraficoAdminServlet extends HttpServlet {
                         BigDecimal base = att.calcularCusto();
                         if (base != null) {
                             BigDecimal valorBruto = base;
-                            BigDecimal valorLiquido = valorBruto.add(valorBruto.multiply(TAXA_GERAL).setScale(2, RoundingMode.HALF_UP));
+                            // Se a taxa já estiver calculada, use-a. Senão, assuma 0 para evitar cálculo de fallback.
+                            BigDecimal valorLiquido = att.getPrecoFinal() != null ? att.getPrecoFinal() : valorBruto;
                             
                             int mesZeroIndexed = att.getDatahora().getMonthValue() - 1; // 0 = Jan
                             faturamentoLiquido[mesZeroIndexed] = faturamentoLiquido[mesZeroIndexed].add(valorLiquido);
@@ -82,9 +91,7 @@ public class GerarGraficoAdminServlet extends HttpServlet {
                 }
             }
             
-            if (anosDisponiveisSet.isEmpty()) {
-                anosDisponiveisSet.add(java.time.LocalDate.now().getYear());
-            }
+
 
             com.google.gson.JsonObject root = new com.google.gson.JsonObject();
             

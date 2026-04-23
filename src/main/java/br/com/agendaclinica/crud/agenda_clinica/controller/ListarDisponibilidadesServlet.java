@@ -40,12 +40,11 @@ public class ListarDisponibilidadesServlet extends HttpServlet {
             }
 
             for (DisponibilidadeProfissional disp : disponibilidades) {
-                String diaFormatado = formatarDia(disp.getDiaSemana());
                 String status = disp.getAtivo() ? "<span style='color: #00ff88;'>✓ Disponível</span>" : "<span style='color: #ff6b6b;'>✗ Indisponível</span>";
                 String acao = "<button onclick='removerDisponibilidade(" + disp.getId() + ")' style='background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;'>Remover</button>";
 
                 out.println("<tr style='border-bottom: 1px solid rgba(255, 255, 255, 0.1);'>");
-                out.println("<td style='padding: 10px;'>" + diaFormatado + "</td>");
+                out.println("<td style='padding: 10px;'>Todos os dias</td>");
                 out.println("<td style='padding: 10px;'>" + disp.getHorario() + "</td>");
                 out.println("<td style='padding: 10px;'>" + status + "</td>");
                 out.println("<td style='padding: 10px; text-align: center;'>" + acao + "</td>");
@@ -58,16 +57,5 @@ public class ListarDisponibilidadesServlet extends HttpServlet {
         }
     }
 
-    private String formatarDia(String dia) {
-        return switch (dia) {
-            case "SEGUNDA" -> "Segunda-feira";
-            case "TERÇA" -> "Terça-feira";
-            case "QUARTA" -> "Quarta-feira";
-            case "QUINTA" -> "Quinta-feira";
-            case "SEXTA" -> "Sexta-feira";
-            case "SABADO" -> "Sábado";
-            case "DOMINGO" -> "Domingo";
-            default -> dia;
-        };
-    }
+
 }

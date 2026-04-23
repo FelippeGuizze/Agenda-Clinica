@@ -53,8 +53,15 @@ public class ListarConsultasDisponiveisServlet extends HttpServlet {
                 String precoFormatado = consulta.calcularCusto() != null ?
                     "R$ " + consulta.calcularCusto().toString() : "A combinar";
 
-                String botaoAgendar = "<button type='button' onclick='agendarConsulta(" + consulta.getId() + ")' " +
+                boolean isExame = consulta instanceof br.com.agendaclinica.crud.agenda_clinica.model.Exame;
+
+                String botaoAgendar = "<button type='button' onclick='agendarConsulta(" + consulta.getId() + ", " + isExame + ")' " +
                     "style='background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; display: inline-flex; align-items: center; justify-content: center; height: 35px; white-space: nowrap;'>Agendar</button>";
+                
+                String checkboxHtml = "";
+                if (isExame) {
+                    checkboxHtml = "<br><label style='color: #aaa; font-size: 0.8em; cursor: pointer;'><input type='checkbox' id='taxa_" + consulta.getId() + "' style='margin-right: 5px; vertical-align: middle;'>Teste Laboratório (+R$35)</label>";
+                }
 
                 out.println("<tr style='border-bottom: 1px solid rgba(255, 255, 255, 0.1);'>");
                 out.println("<td style='padding: 12px;'>" + profissional.getNome() + "</td>");
@@ -62,7 +69,7 @@ public class ListarConsultasDisponiveisServlet extends HttpServlet {
                 out.println("<td style='padding: 12px;'>" + consulta.getTipo() + "</td>");
                 out.println("<td style='padding: 12px;'>" + dataFormatada + "</td>");
                 out.println("<td style='padding: 12px; font-weight: 600; color: #00ff88;'>" + precoFormatado + "</td>");
-                out.println("<td style='padding: 12px; text-align: center;'>" + botaoAgendar + "</td>");
+                out.println("<td style='padding: 12px; text-align: center;'>" + botaoAgendar + checkboxHtml + "</td>");
                 out.println("</tr>");
             }
 

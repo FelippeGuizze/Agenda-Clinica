@@ -74,37 +74,10 @@ Relacionamentos de Apoio ao Agendamento:
 +-----------------------------------------------------------+
 | - id: Long                                                |
 | - profissionalId: Long                                    |
-| - diaSemana: String  (SEGUNDA, TERCA... DOMINGO)          |
 | - horario: String    ("08:00", "09:00"...)                |
 | - ativo: Boolean                                          |
 +-----------------------------------------------------------+
-| + construct(profissionalId, diaSemana, horario)           |
+| + construct(profissionalId, horario)                      |
 | + getters/setters()                                       |
 +-----------------------------------------------------------+
 
-+-----------------------------------------------------------+
-|                     TipoConsulta                          |
-+-----------------------------------------------------------+
-| - id: Long                                                |
-| - profissionalId: Long                                    |
-| - nome: String       (ex: "Consulta Geral")               |
-| - preco: BigDecimal                                       |
-| - descricao: String                                       |
-| - ativo: Boolean                                          |
-+-----------------------------------------------------------+
-| + construct(profissionalId, nome, preco, descricao)       |
-| + getters/setters()                                       |
-+-----------------------------------------------------------+
-
-+-----------------------------------------------------------+
-|                  ObservacaoAtendimento                    |
-+-----------------------------------------------------------+
-| - id: Long                                                |
-| - atendimento: Atendimento                                |
-| - autor: String                                           |
-| - texto: String                                           |
-| - datahora: LocalDateTime                                 |
-+-----------------------------------------------------------+
-| + construct(atendimento, autor, texto)                    |
-| + getters/setters()                                       |
-+-----------------------------------------------------------+

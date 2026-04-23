@@ -7,11 +7,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import br.com.agendaclinica.crud.agenda_clinica.dao.DisponibilidadeProfissionalDAO;
-import br.com.agendaclinica.crud.agenda_clinica.dao.TipoConsultaDAO;
 import br.com.agendaclinica.crud.agenda_clinica.dao.AtendimentoDAO;
 import br.com.agendaclinica.crud.agenda_clinica.dao.ProfissionalDAO;
 import br.com.agendaclinica.crud.agenda_clinica.model.DisponibilidadeProfissional;
-import br.com.agendaclinica.crud.agenda_clinica.model.TipoConsulta;
 import br.com.agendaclinica.crud.agenda_clinica.model.Atendimento;
 import br.com.agendaclinica.crud.agenda_clinica.model.Consulta;
 import br.com.agendaclinica.crud.agenda_clinica.model.Exame;
@@ -20,7 +18,6 @@ import br.com.agendaclinica.crud.agenda_clinica.util.SecurityUtil;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -44,7 +41,6 @@ public class GerarConsultasDisponiveisServlet extends HttpServlet {
             Long profissionalId = (Long) session.getAttribute("usuarioId");
 
             DisponibilidadeProfissionalDAO dispDAO = new DisponibilidadeProfissionalDAO();
-            TipoConsultaDAO tipoDAO = new TipoConsultaDAO();
             AtendimentoDAO atendimentoDAO = new AtendimentoDAO();
             ProfissionalDAO profissionalDAO = new ProfissionalDAO();
 
@@ -64,24 +60,21 @@ public class GerarConsultasDisponiveisServlet extends HttpServlet {
                 return;
             }
 
-            // Buscar tipos de consulta do profissional
-            List<TipoConsulta> tiposConsulta = tipoDAO.buscarPorProfissional(profissionalId);
-            if (tiposConsulta.isEmpty()) {
-                session.setAttribute("erro", "Você não tem tipos de consulta configurados!");
-                response.sendRedirect(request.getContextPath() + "/disponibilidade-profissional.jsp");
-                return;
-            }
-
-            // Gerar consultas para as próximas 4 semanas
+            // Gerar consultas para os próximos 28 dias
             LocalDate hoje = LocalDate.now();
             int consultasGeradas = 0;
 
-            for (int semana = 0; semana < 4; semana++) {
+            for (int dia = 1; dia <= 28; dia++) {
+                LocalDate dataConsulta = hoje.plusDays(dia);
+                // Evitar sábados e domingos (opcional, mas bom padrão para clínica)
+                if (dataConsulta.getDayOfWeek() == java.time.DayOfWeek.SATURDAY || 
+                    dataConsulta.getDayOfWeek() == java.time.DayOfWeek.SUNDAY) {
+                    continue;
+                }
+
                 for (DisponibilidadeProfissional disp : disponibilidades) {
                     if (!disp.getAtivo()) continue;
 
-                    // Calcular a data para este dia da semana nesta semana
-                    LocalDate dataConsulta = calcularProximaData(hoje.plusWeeks(semana), disp.getDiaSemana());
                     LocalDateTime dataHora = LocalDateTime.of(dataConsulta.getYear(), dataConsulta.getMonth(),
                                                              dataConsulta.getDayOfMonth(),
                                                              Integer.parseInt(disp.getHorario().split(":")[0]),
@@ -92,36 +85,19 @@ public class GerarConsultasDisponiveisServlet extends HttpServlet {
                         continue;
                     }
 
-                    // Criar consultas para cada tipo disponível (Polimorfismo aplicado na factory manual)
-                    for (TipoConsulta tipo : tiposConsulta) {
-                        if (!tipo.getAtivo()) continue;
+                    // Criar consulta padrão já que TipoConsulta foi removido
+                    Atendimento atendimentoAgendado = new Consulta(
+                        "Consulta Geral",
+                        null,
+                        profissional,
+                        dataHora,
+                        "Disponível",
+                        new BigDecimal("150.00"),
+                        disp.getId()
+                    );
 
-                        Atendimento atendimentoAgendado;
-                        if (tipo.getNome().toLowerCase().contains("exame")) {
-                            atendimentoAgendado = new Exame(
-                                tipo.getNome(),
-                                null, // paciente = null (disponível)
-                                profissional,
-                                dataHora,
-                                "Disponível",
-                                tipo.getPreco(),
-                                disp.getId()
-                            );
-                        } else {
-                            atendimentoAgendado = new Consulta(
-                                tipo.getNome(),
-                                null,
-                                profissional,
-                                dataHora,
-                                "Disponível",
-                                tipo.getPreco(),
-                                disp.getId()
-                            );
-                        }
-
-                        atendimentoDAO.salvar(atendimentoAgendado);
-                        consultasGeradas++;
-                    }
+                    atendimentoDAO.salvar(atendimentoAgendado);
+                    consultasGeradas++;
                 }
             }
 
@@ -146,24 +122,7 @@ public class GerarConsultasDisponiveisServlet extends HttpServlet {
         }
     }
 
-    private LocalDate calcularProximaData(LocalDate dataBase, String diaSemana) {
-        DayOfWeek targetDay = switch (diaSemana) {
-            case "SEGUNDA" -> DayOfWeek.MONDAY;
-            case "TERÇA" -> DayOfWeek.TUESDAY;
-            case "QUARTA" -> DayOfWeek.WEDNESDAY;
-            case "QUINTA" -> DayOfWeek.THURSDAY;
-            case "SEXTA" -> DayOfWeek.FRIDAY;
-            case "SABADO" -> DayOfWeek.SATURDAY;
-            case "DOMINGO" -> DayOfWeek.SUNDAY;
-            default -> DayOfWeek.MONDAY;
-        };
 
-        LocalDate data = dataBase;
-        while (data.getDayOfWeek() != targetDay) {
-            data = data.plusDays(1);
-        }
-        return data;
-    }
 
     private boolean consultaJaExiste(AtendimentoDAO dao, Long profissionalId, LocalDateTime dataHora) {
         // Esta é uma verificação simplificada - em produção seria melhor ter uma query específica

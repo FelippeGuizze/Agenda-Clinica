@@ -6,8 +6,6 @@ import java.math.BigDecimal;
 /**
  * Tipos de consulta oferecidos pelos profissionais com preços
  */
-@Entity
-@Table(name = "tipos_consulta")
 public class TipoConsulta {
 
     @Id

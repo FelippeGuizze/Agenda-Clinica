@@ -50,13 +50,12 @@ public class DisponibilidadeProfissionalDAO {
         }
     }
 
-    public List<DisponibilidadeProfissional> buscarPorDiaESemana(String dia, String horario) {
+    public List<DisponibilidadeProfissional> buscarPorHorario(String horario) {
         try (Session session = factory.openSession()) {
             Query<DisponibilidadeProfissional> query = session.createQuery(
-                "FROM DisponibilidadeProfissional WHERE diaSemana = :dia AND horario = :horario AND ativo = true", 
+                "FROM DisponibilidadeProfissional WHERE horario = :horario AND ativo = true", 
                 DisponibilidadeProfissional.class
             );
-            query.setParameter("dia", dia);
             query.setParameter("horario", horario);
             return query.list();
         } catch (Exception e) {

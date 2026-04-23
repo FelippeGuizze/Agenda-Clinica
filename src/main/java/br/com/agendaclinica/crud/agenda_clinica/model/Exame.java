@@ -23,13 +23,15 @@ public class Exame extends Atendimento {
 
     @Override
     public BigDecimal calcularCusto() {
-        // Exames podem ter uma taxa base adicional ou cálculo específico
         BigDecimal base = getPreco() != null ? getPreco() : new BigDecimal("100.00");
-        return base.add(new BigDecimal("35.00")); // Taxa laboratorial de Exame
+        if (Boolean.TRUE.equals(getIncluirTaxaLaboratorial())) {
+            return base.add(new BigDecimal("35.00")); // Taxa laboratorial opcional
+        }
+        return base;
     }
 
     @Override
     public String gerarOrientacoes() {
-        return "Orientações Gerais Padrões: Traga um documento com foto.";
+        return "Traga um documento com foto.";
     }
 }

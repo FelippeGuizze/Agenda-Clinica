@@ -16,10 +16,9 @@ import br.com.agendaclinica.crud.agenda_clinica.dao.PacienteDAO;
 import br.com.agendaclinica.crud.agenda_clinica.dao.ProfissionalDAO;
 import br.com.agendaclinica.crud.agenda_clinica.util.SecurityUtil;
 import java.io.IOException;
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @WebServlet("/AgendarAtendimentoServlet")
 public class AgendarAtendimentoServlet extends HttpServlet {
@@ -69,9 +68,9 @@ public class AgendarAtendimentoServlet extends HttpServlet {
                 return;
             }
 
-            // Construir data/hora do agendamento
-            // Para simplificar, usamos a próxima ocorrência do dia e horário
-            LocalDateTime dataHora = construirDataHora(dia, horario);
+            // Construir data/hora do agendamento (formato esperado yyyy-MM-dd HH:mm)
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime dataHora = LocalDateTime.parse(dia + " " + horario, formatter);
 
             PacienteDAO pacienteDAO = new PacienteDAO();
             ProfissionalDAO profissionalDAO = new ProfissionalDAO();
@@ -125,40 +124,5 @@ public class AgendarAtendimentoServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Constrói uma LocalDateTime baseada no dia da semana e horário
-     */
-    private LocalDateTime construirDataHora(String dia, String horario) {
-        LocalDate hoje = LocalDate.now();
-        DayOfWeek targetDay = converterDiaParaDayOfWeek(dia);
-        
-        // Encontra a próxima ocorrência do dia
-        LocalDate data = hoje;
-        while (data.getDayOfWeek() != targetDay) {
-            data = data.plusDays(1);
-        }
 
-        // Parse do horário (formato HH:mm)
-        String[] partes = horario.split(":");
-        int hora = Integer.parseInt(partes[0]);
-        int minuto = partes.length > 1 ? Integer.parseInt(partes[1]) : 0;
-
-        return LocalDateTime.of(data.getYear(), data.getMonth(), data.getDayOfMonth(), hora, minuto);
-    }
-
-    /**
-     * Converte string do dia para DayOfWeek
-     */
-    private DayOfWeek converterDiaParaDayOfWeek(String dia) {
-        return switch (dia) {
-            case "SEGUNDA" -> DayOfWeek.MONDAY;
-            case "TERÇA" -> DayOfWeek.TUESDAY;
-            case "QUARTA" -> DayOfWeek.WEDNESDAY;
-            case "QUINTA" -> DayOfWeek.THURSDAY;
-            case "SEXTA" -> DayOfWeek.FRIDAY;
-            case "SABADO" -> DayOfWeek.SATURDAY;
-            case "DOMINGO" -> DayOfWeek.SUNDAY;
-            default -> DayOfWeek.MONDAY;
-        };
-    }
 }

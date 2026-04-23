@@ -32,6 +32,6 @@ public class Consulta extends Atendimento {
 
     @Override
     public String gerarOrientacoes() {
-        return "Recomendações Gerais: Chegue com 15 minutos de antecedência na recepção.";
+        return "Chegue com 15 minutos de antecedência na recepção.";
     }
 }

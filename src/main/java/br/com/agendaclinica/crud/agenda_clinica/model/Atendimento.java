@@ -34,6 +34,15 @@ public abstract class Atendimento {
     @Column(precision = 10, scale = 2)
     private BigDecimal preco; // Preço da consulta
 
+    @Column(name = "valor_taxa", precision = 10, scale = 2)
+    private BigDecimal valorTaxa;
+
+    @Column(name = "preco_final", precision = 10, scale = 2)
+    private BigDecimal precoFinal;
+
+    @Column(name = "incluir_taxa_laboratorial", columnDefinition = "TINYINT(1)")
+    private Boolean incluirTaxaLaboratorial = false;
+
     @Column(name = "disponibilidade_id")
     private Long disponibilidadeId; // Link para a disponibilidade usada
 
@@ -76,6 +85,12 @@ public abstract class Atendimento {
     public void setStatus(String status) { this.status = status; }
     public BigDecimal getPreco() { return preco; }
     public void setPreco(BigDecimal preco) { this.preco = preco; }
+    public BigDecimal getValorTaxa() { return valorTaxa; }
+    public void setValorTaxa(BigDecimal valorTaxa) { this.valorTaxa = valorTaxa; }
+    public BigDecimal getPrecoFinal() { return precoFinal; }
+    public void setPrecoFinal(BigDecimal precoFinal) { this.precoFinal = precoFinal; }
+    public Boolean getIncluirTaxaLaboratorial() { return incluirTaxaLaboratorial; }
+    public void setIncluirTaxaLaboratorial(Boolean incluirTaxaLaboratorial) { this.incluirTaxaLaboratorial = incluirTaxaLaboratorial; }
     public Long getDisponibilidadeId() { return disponibilidadeId; }
     public void setDisponibilidadeId(Long disponibilidadeId) { this.disponibilidadeId = disponibilidadeId; }
     public String getOrientacaoMedico() { return orientacaoMedico; }

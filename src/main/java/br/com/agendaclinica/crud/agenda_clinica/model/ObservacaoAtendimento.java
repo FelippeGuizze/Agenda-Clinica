@@ -3,25 +3,16 @@ package br.com.agendaclinica.crud.agenda_clinica.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "observacoes_atendimento")
 public class ObservacaoAtendimento {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "atendimento_id", nullable = false)
     private Atendimento atendimento;
 
-    @Column(nullable = false)
     private String autor;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
     private String texto;
 
-    @Column(nullable = false)
     private LocalDateTime datahora;
 
     // Construtores

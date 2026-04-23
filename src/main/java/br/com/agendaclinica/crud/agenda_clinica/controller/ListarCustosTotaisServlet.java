@@ -60,16 +60,16 @@ public class ListarCustosTotaisServlet extends HttpServlet {
                 // Tratar escapes para JSOn string
                 orientacoes = orientacoes.replace("\"", "\\\"");
 
-                // ================= REGRA DE NEGÓCIOS NOVA (TAXA 10%) =================
-                // Taxa aplicada sempre em cima do valor base (se não for nulo/0)
+                // ================= REGRA DE NEGÓCIOS LIDA DA BASE =================
+                custoBase = att.calcularCusto();
                 if (custoBase == null) custoBase = BigDecimal.ZERO;
                 
-                BigDecimal valorDaTaxa = custoBase.multiply(TAXA_GERAL).setScale(2, RoundingMode.HALF_UP);
-                BigDecimal valorFinal = custoBase.add(valorDaTaxa).setScale(2, RoundingMode.HALF_UP);
+                BigDecimal valorDaTaxa = att.getValorTaxa() != null ? att.getValorTaxa() : BigDecimal.ZERO;
+                BigDecimal valorFinal = att.getPrecoFinal() != null ? att.getPrecoFinal() : custoBase;
 
                 totalAcumulado = totalAcumulado.add(valorFinal);
 
-                String extrato = String.format("Custo OOP: R$ %s <br>+ Taxa Geral (10%%): R$ %s <br><b>= Valor Final: R$ %s</b>", 
+                String extrato = String.format("Custo Base: R$ %s <br>+ Taxa (10%%): R$ %s <br><b>= Valor Final: R$ %s</b>", 
                                         custoBase.toString(), valorDaTaxa.toString(), valorFinal.toString());
 
                 String profissionalNome = att.getProfissional().getNome() + " (" + att.getProfissional().getEspecialidade() + ")";

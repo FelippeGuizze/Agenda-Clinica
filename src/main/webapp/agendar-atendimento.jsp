@@ -86,7 +86,7 @@
         }
 
         // Função para agendar consulta
-        function agendarConsulta(atendimentoId) {
+        function agendarConsulta(atendimentoId, isExame) {
             if (confirm('Tem certeza que deseja agendar esta consulta?')) {
                 // Criar formulário dinâmico para POST
                 const form = document.createElement('form');
@@ -99,6 +99,18 @@
                 input.value = atendimentoId;
 
                 form.appendChild(input);
+
+                if (isExame) {
+                    const cb = document.getElementById('taxa_' + atendimentoId);
+                    if (cb && cb.checked) {
+                        const cbInput = document.createElement('input');
+                        cbInput.type = 'hidden';
+                        cbInput.name = 'incluirTaxaLaboratorial';
+                        cbInput.value = 'true';
+                        form.appendChild(cbInput);
+                    }
+                }
+
                 document.body.appendChild(form);
                 
                 // Mostrar feedback

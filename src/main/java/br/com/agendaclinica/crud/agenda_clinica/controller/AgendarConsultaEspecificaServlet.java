@@ -12,6 +12,8 @@ import br.com.agendaclinica.crud.agenda_clinica.model.Atendimento;
 import br.com.agendaclinica.crud.agenda_clinica.model.Paciente;
 import br.com.agendaclinica.crud.agenda_clinica.util.SecurityUtil;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @WebServlet("/AgendarConsultaEspecificaServlet")
 public class AgendarConsultaEspecificaServlet extends HttpServlet {
@@ -65,6 +67,22 @@ public class AgendarConsultaEspecificaServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/agendar-atendimento.jsp");
                 return;
             }
+
+            // Configurar taxa laboratorial se for exame
+            if (consulta instanceof br.com.agendaclinica.crud.agenda_clinica.model.Exame) {
+                String incluirTaxa = request.getParameter("incluirTaxaLaboratorial");
+                consulta.setIncluirTaxaLaboratorial("true".equals(incluirTaxa));
+            }
+
+            // Calcular taxas do sistema (10% fixo)
+            BigDecimal custoBase = consulta.calcularCusto();
+            if (custoBase == null) custoBase = BigDecimal.ZERO;
+            
+            BigDecimal taxaSistema = custoBase.multiply(new BigDecimal("0.10")).setScale(2, RoundingMode.HALF_UP);
+            BigDecimal valorFinal = custoBase.add(taxaSistema).setScale(2, RoundingMode.HALF_UP);
+            
+            consulta.setValorTaxa(taxaSistema);
+            consulta.setPrecoFinal(valorFinal);
 
             // Agendar a consulta
             consulta.setPaciente(paciente);
