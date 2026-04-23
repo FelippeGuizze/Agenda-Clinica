@@ -53,9 +53,17 @@ public class ListarConsultaLivreMedicoServlet extends HttpServlet {
             for (Atendimento agenda : consultasLivres) {
                 String dataFormatada = agenda.getDatahora().format(formatter);
                 
-                // Polymorphic Call
-                String precoFormatado = agenda.calcularCusto() != null ?
-                    "R$ " + agenda.calcularCusto().toString() : "A combinar";
+                // Polymorphic Call for Base
+                java.math.BigDecimal custoBase = agenda.calcularCusto();
+                String precoFormatado;
+                
+                if (custoBase != null) {
+                    java.math.BigDecimal taxaProj = custoBase.multiply(new java.math.BigDecimal("0.10")).setScale(2, java.math.RoundingMode.HALF_UP);
+                    java.math.BigDecimal precoProj = custoBase.add(taxaProj).setScale(2, java.math.RoundingMode.HALF_UP);
+                    precoFormatado = "Sua Base: R$ " + custoBase.toString() + "<br><span style='font-size: 0.8em; color: #aaa;'>Proj. Final (Paciente): R$ " + precoProj.toString() + "</span>";
+                } else {
+                    precoFormatado = "A combinar";
+                }
 
                 out.println("<tr style='border-bottom: 1px solid rgba(255, 255, 255, 0.1);'>");
                 out.println("<td style='padding: 12px;'>" + agenda.getClass().getSimpleName() + "</td>");

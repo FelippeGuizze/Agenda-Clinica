@@ -8,6 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Agenda - Agenda Clínica</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/>
+    <style>
+        @media print {
+            @page { margin: 0; }
+            body { background: white; color: black; margin: 2cm; }
+            .voltar-link, .btn-print, .erro, .sucesso, form, hr, h1, .form-group, .btn-submit, small { display: none !important; }
+            table { width: 100%; border-collapse: collapse; color: black !important; }
+            th, td { border: 1px solid #ccc !important; color: black !important; padding: 8px; text-align: left; }
+            h2 { color: black !important; margin-top: 0; }
+        }
+    </style>
 </head>
 <body>
     <div class="table-container">
@@ -73,6 +83,7 @@
             <hr style="border: 1px solid rgba(255, 255, 255, 0.2); margin: 30px 0;">
 
             <h2 style="color: #00d4ff; margin-bottom: 20px;">Seus Horários Oferecidos (Livres)</h2>
+            <button class="btn-print" onclick="window.print()" style="margin-bottom: 20px; padding: 10px 20px; background: #ffca28; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: #333;">🖨️ Exportar Relatório PDF</button>
             
             <div style="overflow-x: auto;">
                 <table style="width: 100%; border-collapse: collapse;">

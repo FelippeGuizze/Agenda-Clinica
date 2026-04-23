@@ -27,7 +27,7 @@
             <c:remove var="sucesso" scope="session"/>
         </c:if>
 
-        <form method="POST" action="${pageContext.request.contextPath}/CadastroServlet">
+        <form method="POST" action="${pageContext.request.contextPath}/CadastroServlet" onsubmit="return validarFormulario(event)">
             <div class="form-group">
                 <label for="nome">Nome Completo:</label>
                 <input type="text" id="nome" name="nome" required>
@@ -39,9 +39,20 @@
                 <small id="emailStatus"></small>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" style="position: relative;">
                 <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" required>
+                <input type="password" id="senha" name="senha" required style="padding-right: 40px;">
+                <button type="button" onclick="toggleSenha('senha', 'eyeIconSenha')" style="position: absolute; right: 10px; top: 38px; background: none; border: none; cursor: pointer; color: #aaa; font-size: 1.2em;">
+                    <span id="eyeIconSenha">👁️</span>
+                </button>
+            </div>
+
+            <div class="form-group" style="position: relative;">
+                <label for="confirmar_senha">Confirme a Senha:</label>
+                <input type="password" id="confirmar_senha" name="confirmar_senha" required style="padding-right: 40px;">
+                <button type="button" onclick="toggleSenha('confirmar_senha', 'eyeIconConfirm')" style="position: absolute; right: 10px; top: 38px; background: none; border: none; cursor: pointer; color: #aaa; font-size: 1.2em;">
+                    <span id="eyeIconConfirm">👁️</span>
+                </button>
             </div>
 
             <div class="form-group">
@@ -55,7 +66,7 @@
 
             <div class="form-group" id="contato-group" style="display: none;">
                 <label for="contato">Contato (Telefone/WhatsApp):</label>
-                <input type="text" id="contato" name="contato" placeholder="(11) 98765-4321">
+                <input type="text" id="contato" name="contato" placeholder="(11) 98765-4321" oninput="mascaraTelefone(this)" maxlength="15" minlength="15" pattern="^\(\d{2}\) \d{5}-\d{4}$">
             </div>
 
             <div class="form-group" id="especialidade-group" style="display: none;">
@@ -111,6 +122,41 @@
                 especialidadeInput.required = false;
             }
         });
+
+        function mascaraTelefone(input) {
+            let v = input.value.replace(/\D/g, '');
+            if (v.length > 11) v = v.slice(0, 11);
+            if (v.length > 2) {
+                v = '(' + v.substring(0, 2) + ') ' + v.substring(2);
+            }
+            if (v.length > 10) {
+                v = v.substring(0, 10) + '-' + v.substring(10);
+            }
+            input.value = v;
+        }
+
+        function toggleSenha(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.innerText = "🙈";
+            } else {
+                input.type = "password";
+                icon.innerText = "👁️";
+            }
+        }
+
+        function validarFormulario(event) {
+            const senha = document.getElementById('senha').value;
+            const confirmar_senha = document.getElementById('confirmar_senha').value;
+            if (senha !== confirmar_senha) {
+                alert('As senhas não coincidem!');
+                event.preventDefault();
+                return false;
+            }
+            return true;
+        }
     </script>
 </body>
 </html>

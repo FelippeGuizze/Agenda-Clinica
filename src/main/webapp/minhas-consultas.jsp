@@ -8,6 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minhas Consultas - Agenda Clínica</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/>
+    <style>
+        @media print {
+            @page { margin: 0; }
+            body { background: white; color: black; margin: 2cm; }
+            .voltar-link, .btn-print, .erro, .sucesso, div[style*="rgba(0, 212, 255, 0.1)"] { display: none !important; }
+            table { width: 100%; border-collapse: collapse; color: black !important; }
+            th, td { border: 1px solid #ccc !important; color: black !important; padding: 8px; text-align: left; }
+            h1 { color: black !important; }
+            span { color: black !important; }
+        }
+    </style>
 </head>
 <body>
     <div class="table-container">
@@ -38,6 +49,8 @@
             <div style="margin-bottom: 30px; padding: 15px; background: rgba(0, 212, 255, 0.1); border-radius: 5px; border-left: 4px solid #00d4ff;">
                 <strong>ℹ️ Informação:</strong> Aqui você pode visualizar todas as suas consultas agendadas e seus respectivos status.
             </div>
+
+            <button class="btn-print" onclick="window.print()" style="margin-bottom: 20px; padding: 10px 20px; background: #ffca28; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: #333;">🖨️ Exportar Relatório PDF</button>
 
             <div style="overflow-x: auto;">
                 <table style="width: 100%; border-collapse: collapse;">

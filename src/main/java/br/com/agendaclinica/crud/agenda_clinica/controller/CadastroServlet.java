@@ -96,12 +96,8 @@ public class CadastroServlet extends HttpServlet {
 
             // Se for paciente, criar registro em pacientes
             if (categoria == 1) {
-                if (!SecurityUtil.validarContato(contato)) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("erro", "Contato inválido! Use formato: (11) 98765-4321");
-                    response.sendRedirect(request.getContextPath() + "/cadastro.jsp");
-                    return;
-                }
+                // A validação de formato e comprimento do contato (máscara)
+                // agora é garantida no front-end (HTML5) e no BD (VARCHAR 15)
 
                 Paciente paciente = new Paciente(nome, contato);
                 PacienteDAO pacienteDAO = new PacienteDAO();

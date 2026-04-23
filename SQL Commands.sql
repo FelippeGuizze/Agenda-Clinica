@@ -14,7 +14,7 @@ CREATE TABLE usuarios (
 CREATE TABLE pacientes (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
-    contato VARCHAR(20) NOT NULL
+    contato VARCHAR(15) NOT NULL
 );
 
 CREATE TABLE profissionais (

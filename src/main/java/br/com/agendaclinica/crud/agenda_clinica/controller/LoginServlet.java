@@ -44,6 +44,9 @@ public class LoginServlet extends HttpServlet {
 
             if (usuario != null && usuario.validarSenha(senha)) {
                 // Login bem-sucedido
+                // Proteção contra Sequestro de Sessão (Session Fixation)
+                request.changeSessionId(); 
+                
                 HttpSession session = request.getSession();
                 session.setAttribute("usuarioId", usuario.getId());
                 session.setAttribute("usuarioNome", SecurityUtil.escaparXSS(usuario.getNome()));
