@@ -19,6 +19,12 @@ public class Profissional {
     @Column(nullable = false)
     private String especialidade;
 
+    @Column(name = "crm_numero", length = 6, nullable = true)
+    private String crmNumero;
+
+    @Column(name = "crm_uf", length = 2, nullable = true)
+    private String crmUf;
+
     // Construtores
     public Profissional() {}
 
@@ -26,6 +32,15 @@ public class Profissional {
         this.nome = nome;
         this.categoria = categoria;
         this.especialidade = especialidade;
+    }
+
+    /**
+     * Retorna o CRM formatado: CRM/UF XXXXXX
+     * Retorna null se não houver CRM cadastrado
+     */
+    public String getCrmFormatado() {
+        if (crmNumero == null || crmUf == null) return null;
+        return "CRM/" + crmUf + " " + crmNumero;
     }
 
     // Getters e Setters
@@ -37,4 +52,9 @@ public class Profissional {
     public void setCategoria(String categoria) { this.categoria = categoria; }
     public String getEspecialidade() { return especialidade; }
     public void setEspecialidade(String especialidade) { this.especialidade = especialidade; }
+    public String getCrmNumero() { return crmNumero; }
+    public void setCrmNumero(String crmNumero) { this.crmNumero = crmNumero; }
+    public String getCrmUf() { return crmUf; }
+    public void setCrmUf(String crmUf) { this.crmUf = crmUf; }
 }
+

@@ -27,9 +27,12 @@ DIAGRAMA DE CLASSES E ACOPLAMENTO (UML TEXTUAL BASE)
 | - nome: String        |<--------+    | - nome: String        |
 | - contato: String     |         |    | - categoria: String   |
 +-----------------------+         |    | - especialidade: Str  |
-| + construct()         |         |    +-----------------------+
-| + getters/setters()   |         |    | + construct()         |
-+-----------------------+         |    | + getters/setters()   |
+| + construct()         |         |    | - crmNumero: String   |
+| + getters/setters()   |         |    | - crmUf: String       |
++-----------------------+         |    +-----------------------+
+                                  |    | + construct()         |
+                                  |    | + getCrmFormatado()   |
+                                  |    | + getters/setters()   |
                                   |    +-----------------------+
                                   |                 ^ 1
                                 * |                 |
@@ -80,4 +83,29 @@ Relacionamentos de Apoio ao Agendamento:
 | + construct(profissionalId, horario)                      |
 | + getters/setters()                                       |
 +-----------------------------------------------------------+
+
+
+-------------------------------------------------------------
+Controle de Acesso Médico (CRM):
+-------------------------------------------------------------
+
++-----------------------------------------------------------+
+|                     CrmAutorizado                         |
++-----------------------------------------------------------+
+| - id: Long                                                |
+| - crmNumero: String (max 6 dígitos)                       |
+| - crmUf: String (2 letras, sigla estado)                  |
+| - emailAutorizado: String (UNIQUE)                        |
+| - usado: Boolean (default false)                          |
+| - dataCriacao: LocalDateTime                              |
++-----------------------------------------------------------+
+| + construct(crmNumero, crmUf, emailAutorizado)            |
+| + getCrmFormatado(): String  → "CRM/SP 123456"           |
+| + getters/setters()                                       |
++-----------------------------------------------------------+
+Regras:
+  - Somente Admin pode cadastrar CRMs autorizados
+  - Médico precisa de CRM + email autorizados para cadastro
+  - Após uso, CRM é marcado como usado (não reutilizável)
+  - CRM NÃO aparece no Backup/Restore (regra de negócio)
 

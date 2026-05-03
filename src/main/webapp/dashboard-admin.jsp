@@ -48,6 +48,11 @@
                style="display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); border-radius: 8px; text-decoration: none; text-align: center; color: white; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); transition: all 0.3s ease; box-sizing: border-box; min-height: 80px;">
                 📥 Inserir Backup
             </a>
+
+            <a href="${pageContext.request.contextPath}/admin-crm.jsp" 
+               style="display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 8px; text-decoration: none; text-align: center; color: white; font-weight: 700; transition: all 0.3s ease; box-sizing: border-box; min-height: 80px; grid-column: 1 / -1;">
+                🏥 Autorizar CRM Médico
+            </a>
         </div>
         
         <!-- Formulário Oculto para Restore -->

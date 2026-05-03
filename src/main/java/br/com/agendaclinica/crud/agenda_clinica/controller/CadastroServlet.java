@@ -9,9 +9,11 @@ import jakarta.servlet.http.HttpSession;
 import br.com.agendaclinica.crud.agenda_clinica.model.Usuario;
 import br.com.agendaclinica.crud.agenda_clinica.model.Paciente;
 import br.com.agendaclinica.crud.agenda_clinica.model.Profissional;
+import br.com.agendaclinica.crud.agenda_clinica.model.CrmAutorizado;
 import br.com.agendaclinica.crud.agenda_clinica.dao.UsuarioDAO;
 import br.com.agendaclinica.crud.agenda_clinica.dao.PacienteDAO;
 import br.com.agendaclinica.crud.agenda_clinica.dao.ProfissionalDAO;
+import br.com.agendaclinica.crud.agenda_clinica.dao.CrmAutorizadoDAO;
 import br.com.agendaclinica.crud.agenda_clinica.util.SeedService;
 import br.com.agendaclinica.crud.agenda_clinica.util.SecurityUtil;
 import java.io.IOException;
@@ -50,6 +52,8 @@ public class CadastroServlet extends HttpServlet {
         String contato = request.getParameter("contato");
         String especialidade = request.getParameter("especialidade");
         String origemCadastro = request.getParameter("origemCadastro");
+        String crmNumero = request.getParameter("crm_numero");
+        String crmUf = request.getParameter("crm_uf");
 
         String paginaCadastro = getPaginaCadastro(origemCadastro, request.getContextPath());
         String paginaLogin = getPaginaLoginSucesso(origemCadastro, request.getContextPath());
@@ -68,6 +72,8 @@ public class CadastroServlet extends HttpServlet {
             email = email.trim();
             contato = contato != null ? contato.trim() : "";
             especialidade = especialidade != null ? especialidade.trim() : "";
+            crmNumero = crmNumero != null ? crmNumero.trim() : "";
+            crmUf = crmUf != null ? crmUf.trim().toUpperCase() : "";
 
             // Validar formato de entrada
             if (!SecurityUtil.validarNome(nome)) {
@@ -138,10 +144,55 @@ public class CadastroServlet extends HttpServlet {
                     return;
                 }
 
+                // === VALIDAÇÃO CRM ===
+                // Médicos precisam de um CRM autorizado pelo administrador
+                if (crmNumero.isEmpty() || crmUf.isEmpty()) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("erro", "CRM é obrigatório para cadastro de médico! Informe o número CRM e UF.");
+                    SecurityUtil.registrarAuditoria(email, "Cadastro médico - CRM não informado", false);
+                    response.sendRedirect(paginaCadastro);
+                    return;
+                }
+
+                // Validar formato CRM (apenas dígitos, máx 6)
+                if (!crmNumero.matches("^\\d{1,6}$")) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("erro", "Número do CRM inválido! Use apenas dígitos (máximo 6).");
+                    response.sendRedirect(paginaCadastro);
+                    return;
+                }
+
+                // Verificar se o CRM + email está autorizado pelo admin
+                CrmAutorizadoDAO crmDAO = new CrmAutorizadoDAO();
+                CrmAutorizado autorizacao = crmDAO.buscarPorEmailECrm(email, crmNumero, crmUf);
+
+                if (autorizacao == null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("erro", "CRM não autorizado! Solicite autorização ao administrador do sistema. "
+                        + "O CRM e email informados devem corresponder à autorização previamente cadastrada.");
+                    SecurityUtil.registrarAuditoria(email, "Cadastro médico - CRM não autorizado (CRM/" + crmUf + " " + crmNumero + ")", false);
+                    response.sendRedirect(paginaCadastro);
+                    return;
+                }
+
+                if (autorizacao.getUsado()) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("erro", "Este CRM já foi utilizado para cadastro! Cada CRM só pode ser usado uma vez.");
+                    SecurityUtil.registrarAuditoria(email, "Cadastro médico - CRM já usado (CRM/" + crmUf + " " + crmNumero + ")", false);
+                    response.sendRedirect(paginaCadastro);
+                    return;
+                }
+
+                // CRM autorizado — criar profissional com CRM
                 Profissional profissional = new Profissional(nome, "Profissional", especialidade);
+                profissional.setCrmNumero(crmNumero);
+                profissional.setCrmUf(crmUf);
                 ProfissionalDAO profissionalDAO = new ProfissionalDAO();
                 profissionalDAO.salvar(profissional);
                 profissionalId = profissional.getId();
+
+                // Marcar CRM como usado
+                crmDAO.marcarComoUsado(autorizacao.getId());
             }
 
             // Criar usuário com links para pacientes ou profissionais

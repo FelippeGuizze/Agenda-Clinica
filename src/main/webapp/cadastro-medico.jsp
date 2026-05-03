@@ -59,7 +59,55 @@
                 </button>
             </div>
 
-            <div class="form-group">
+            <div style="margin-bottom: 20px; padding: 12px; background: rgba(102, 126, 234, 0.1); border-radius: 5px; border-left: 4px solid #667eea;">
+                <strong>ℹ️ Importante:</strong> Para se cadastrar como médico, seu CRM e email devem estar previamente autorizados pelo administrador do sistema.
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label for="crm_numero">Número CRM:</label>
+                    <input type="text" id="crm_numero" name="crm_numero" required
+                           maxlength="6" placeholder="123456"
+                           oninput="this.value = this.value.replace(/\D/g, '')"
+                           style="text-align: center; font-size: 1.1em; letter-spacing: 2px;">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label for="crm_uf">UF:</label>
+                    <select id="crm_uf" name="crm_uf" required style="font-size: 1.1em; text-align: center;">
+                        <option value="" disabled selected>UF</option>
+                        <option value="AC">AC</option>
+                        <option value="AL">AL</option>
+                        <option value="AP">AP</option>
+                        <option value="AM">AM</option>
+                        <option value="BA">BA</option>
+                        <option value="CE">CE</option>
+                        <option value="DF">DF</option>
+                        <option value="ES">ES</option>
+                        <option value="GO">GO</option>
+                        <option value="MA">MA</option>
+                        <option value="MT">MT</option>
+                        <option value="MS">MS</option>
+                        <option value="MG">MG</option>
+                        <option value="PA">PA</option>
+                        <option value="PB">PB</option>
+                        <option value="PR">PR</option>
+                        <option value="PE">PE</option>
+                        <option value="PI">PI</option>
+                        <option value="RJ">RJ</option>
+                        <option value="RN">RN</option>
+                        <option value="RS">RS</option>
+                        <option value="RO">RO</option>
+                        <option value="RR">RR</option>
+                        <option value="SC">SC</option>
+                        <option value="SP">SP</option>
+                        <option value="SE">SE</option>
+                        <option value="TO">TO</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 15px;">
                 <label for="especialidade">Especialidade:</label>
                 <select id="especialidade" name="especialidade" required>
                     <option value="" disabled selected>-- Escolha a Especialidade --</option>
