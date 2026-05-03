@@ -19,6 +19,27 @@ import java.io.IOException;
 @WebServlet("/CadastroServlet")
 public class CadastroServlet extends HttpServlet {
 
+    /**
+     * Determina as páginas de redirecionamento baseado no origemCadastro.
+     */
+    private String getPaginaCadastro(String origem, String contextPath) {
+        if (origem == null) return contextPath + "/cadastro.jsp";
+        switch (origem) {
+            case "paciente": return contextPath + "/cadastro-paciente.jsp";
+            case "medico":   return contextPath + "/cadastro-medico.jsp";
+            default:         return contextPath + "/cadastro.jsp";
+        }
+    }
+
+    private String getPaginaLoginSucesso(String origem, String contextPath) {
+        if (origem == null) return contextPath + "/login.jsp";
+        switch (origem) {
+            case "paciente": return contextPath + "/login-paciente.jsp";
+            case "medico":   return contextPath + "/login-medico.jsp";
+            default:         return contextPath + "/login.jsp";
+        }
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
@@ -28,13 +49,17 @@ public class CadastroServlet extends HttpServlet {
         String categoriaStr = request.getParameter("categoria");
         String contato = request.getParameter("contato");
         String especialidade = request.getParameter("especialidade");
+        String origemCadastro = request.getParameter("origemCadastro");
+
+        String paginaCadastro = getPaginaCadastro(origemCadastro, request.getContextPath());
+        String paginaLogin = getPaginaLoginSucesso(origemCadastro, request.getContextPath());
 
         try {
             // Validações de entrada
             if (nome == null || email == null || senha == null || categoriaStr == null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("erro", "Todos os campos são obrigatórios!");
-                response.sendRedirect(request.getContextPath() + "/cadastro.jsp");
+                response.sendRedirect(paginaCadastro);
                 return;
             }
 
@@ -49,7 +74,7 @@ public class CadastroServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("erro", "Nome inválido! Use apenas letras e espaços.");
                 SecurityUtil.registrarAuditoria(email, "Cadastro - Nome inválido", false);
-                response.sendRedirect(request.getContextPath() + "/cadastro.jsp");
+                response.sendRedirect(paginaCadastro);
                 return;
             }
 
@@ -57,7 +82,7 @@ public class CadastroServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("erro", "Email inválido!");
                 SecurityUtil.registrarAuditoria(email, "Cadastro - Email inválido", false);
-                response.sendRedirect(request.getContextPath() + "/cadastro.jsp");
+                response.sendRedirect(paginaCadastro);
                 return;
             }
 
@@ -65,7 +90,7 @@ public class CadastroServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("erro", "Senha deve ter no mínimo 6 caracteres!");
                 SecurityUtil.registrarAuditoria(email, "Cadastro - Senha fraca", false);
-                response.sendRedirect(request.getContextPath() + "/cadastro.jsp");
+                response.sendRedirect(paginaCadastro);
                 return;
             }
 
@@ -75,7 +100,7 @@ public class CadastroServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("erro", "Entrada contém caracteres inválidos!");
                 SecurityUtil.registrarAuditoria(email, "Cadastro - Entrada suspeita", false);
-                response.sendRedirect(request.getContextPath() + "/cadastro.jsp");
+                response.sendRedirect(paginaCadastro);
                 return;
             }
 
@@ -86,7 +111,7 @@ public class CadastroServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("erro", "Este email já está cadastrado no sistema!");
                 SecurityUtil.registrarAuditoria(email, "Cadastro - Email duplicado", false);
-                response.sendRedirect(request.getContextPath() + "/cadastro.jsp");
+                response.sendRedirect(paginaCadastro);
                 return;
             }
 
@@ -109,7 +134,7 @@ public class CadastroServlet extends HttpServlet {
                 if (especialidade.isEmpty()) {
                     HttpSession session = request.getSession();
                     session.setAttribute("erro", "Especialidade é obrigatória!");
-                    response.sendRedirect(request.getContextPath() + "/cadastro.jsp");
+                    response.sendRedirect(paginaCadastro);
                     return;
                 }
 
@@ -126,11 +151,11 @@ public class CadastroServlet extends HttpServlet {
             usuario.setProfissionalId(profissionalId);
             usuarioDAO.salvar(usuario);
 
-            // Redirecionar para login com mensagem de sucesso
+            // Redirecionar para login CORRETO com mensagem de sucesso
             HttpSession session = request.getSession();
             session.setAttribute("sucesso", "Cadastro realizado com sucesso! Faça login agora.");
             SecurityUtil.registrarAuditoria(email, "Cadastro bem-sucedido", true);
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            response.sendRedirect(paginaLogin);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,7 +163,7 @@ public class CadastroServlet extends HttpServlet {
             session.setAttribute("erro", "Erro ao realizar cadastro!");
             String emailFail = request.getParameter("email");
             SecurityUtil.registrarAuditoria(emailFail != null ? emailFail : "UNKNOWN", "Cadastro - Erro na aplicação", false);
-            response.sendRedirect(request.getContextPath() + "/cadastro.jsp");
+            response.sendRedirect(paginaCadastro);
         }
     }
 }

@@ -226,3 +226,288 @@ select:focus {
         transform: translateY(0);
     }
 }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+}
+
+/* ============================
+   INDEX PAGE — Hero Layout
+   ============================ */
+.index-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+}
+
+.index-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px 30px;
+    z-index: 10;
+}
+
+.btn-adm {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: #aaa;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(6px);
+}
+
+.btn-adm:hover {
+    background: rgba(255, 107, 107, 0.15);
+    border-color: rgba(255, 107, 107, 0.4);
+    color: #ff6b6b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+}
+
+.index-hero {
+    text-align: center;
+    margin-bottom: 50px;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.index-hero h1 {
+    font-size: 3em;
+    margin-bottom: 12px;
+}
+
+.index-hero p {
+    color: #8a8a9a;
+    font-size: 1.1em;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.index-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    max-width: 700px;
+    width: 90%;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.index-card {
+    background: rgba(30, 30, 46, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 40px 30px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    transition: all 0.35s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.index-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 16px 16px 0 0;
+    transition: height 0.3s ease;
+}
+
+.index-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.card-paciente::before {
+    background: linear-gradient(135deg, #00d4ff, #0099ff);
+}
+
+.card-paciente:hover {
+    box-shadow: 0 12px 40px rgba(0, 153, 255, 0.25);
+    border-color: rgba(0, 212, 255, 0.3);
+}
+
+.card-medico::before {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.card-medico:hover {
+    box-shadow: 0 12px 40px rgba(118, 75, 162, 0.25);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+.card-icon {
+    font-size: 3em;
+    margin-bottom: 18px;
+    display: block;
+}
+
+.card-title {
+    font-size: 1.35em;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.card-desc {
+    font-size: 0.9em;
+    color: #8a8a9a;
+    line-height: 1.5;
+}
+
+/* ============================
+   ESCOLHA PAGE — Choice Layout
+   ============================ */
+.escolha-container {
+    background: rgba(30, 30, 46, 0.8);
+    padding: 50px 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 480px;
+    width: 90%;
+    margin: 50px auto;
+    text-align: center;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.escolha-container h1 {
+    font-size: 1.8em;
+    margin-bottom: 8px;
+}
+
+.escolha-subtitle {
+    color: #8a8a9a;
+    margin-bottom: 35px;
+    font-size: 0.95em;
+}
+
+.escolha-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.btn-escolha {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-escolha:hover {
+    transform: translateY(-2px);
+}
+
+.btn-escolha-login {
+    background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+}
+
+.btn-escolha-login:hover {
+    box-shadow: 0 6px 25px rgba(0, 212, 255, 0.5);
+}
+
+.btn-escolha-cadastro {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-escolha-cadastro:hover {
+    box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+}
+
+/* ============================
+   LOGIN BADGE — Role Indicator
+   ============================ */
+.login-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.badge-paciente {
+    background: rgba(0, 212, 255, 0.12);
+    color: #00d4ff;
+    border: 1px solid rgba(0, 212, 255, 0.25);
+}
+
+.badge-medico {
+    background: rgba(102, 126, 234, 0.12);
+    color: #667eea;
+    border: 1px solid rgba(102, 126, 234, 0.25);
+}
+
+.badge-admin {
+    background: rgba(255, 107, 107, 0.12);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.25);
+}
+
+/* ============================
+   RESPONSIVE
+   ============================ */
+@media (max-width: 600px) {
+    .index-cards {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .index-hero h1 {
+        font-size: 2.2em;
+    }
+
+    .index-card {
+        padding: 30px 20px;
+    }
+
+    .escolha-container {
+        padding: 35px 25px;
+    }
+}

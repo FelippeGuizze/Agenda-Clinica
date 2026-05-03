@@ -14,18 +14,69 @@ import java.io.IOException;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 
+    /**
+     * Determina a página de login correta para redirecionar em caso de erro,
+     * baseado no parâmetro tipoLogin.
+     */
+    private String getPaginaLogin(String tipoLogin, String contextPath) {
+        if (tipoLogin == null) return contextPath + "/login.jsp";
+        switch (tipoLogin) {
+            case "paciente": return contextPath + "/login-paciente.jsp";
+            case "medico":   return contextPath + "/login-medico.jsp";
+            case "admin":    return contextPath + "/login-admin.jsp";
+            default:         return contextPath + "/login.jsp";
+        }
+    }
+
+    /**
+     * Valida se a categoria do usuário corresponde ao tipo de login tentado.
+     * Retorna mensagem de erro ou null se OK.
+     */
+    private String validarCategoriaLogin(String tipoLogin, Integer categoriaUsuario) {
+        if (tipoLogin == null) return null; // Login genérico, sem validação de tipo
+
+        switch (tipoLogin) {
+            case "paciente":
+                if (categoriaUsuario != 1) {
+                    if (categoriaUsuario == 2) {
+                        return "Esta conta é de um profissional/médico. Faça login na área de médicos.";
+                    } else if (categoriaUsuario == 0) {
+                        return "Esta conta é administrativa. Faça login no painel ADM.";
+                    }
+                }
+                break;
+            case "medico":
+                if (categoriaUsuario != 2) {
+                    if (categoriaUsuario == 1) {
+                        return "Esta conta é de um paciente. Faça login na área de pacientes.";
+                    } else if (categoriaUsuario == 0) {
+                        return "Esta conta é administrativa. Faça login no painel ADM.";
+                    }
+                }
+                break;
+            case "admin":
+                if (categoriaUsuario != 0) {
+                    return "Acesso negado. Esta conta não possui permissões administrativas.";
+                }
+                break;
+        }
+        return null; // OK
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
+        String tipoLogin = request.getParameter("tipoLogin");
+        String paginaLogin = getPaginaLogin(tipoLogin, request.getContextPath());
 
         // Validar entradas
         if (email == null || email.trim().isEmpty() || senha == null || senha.trim().isEmpty()) {
             HttpSession session = request.getSession();
             session.setAttribute("erro", "Email e senha são obrigatórios!");
             SecurityUtil.registrarAuditoria(email != null ? email : "UNKNOWN", "Login - Campos vazios", false);
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            response.sendRedirect(paginaLogin);
             return;
         }
 
@@ -34,7 +85,7 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("erro", "Entrada contém caracteres inválidos!");
             SecurityUtil.registrarAuditoria(email, "Login - Entrada suspeita", false);
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            response.sendRedirect(paginaLogin);
             return;
         }
 
@@ -43,6 +94,16 @@ public class LoginServlet extends HttpServlet {
             Usuario usuario = usuarioDAO.buscarPorEmail(email);
 
             if (usuario != null && usuario.validarSenha(senha)) {
+                // Validar se a categoria do usuário corresponde ao tipo de login
+                String erroCategoria = validarCategoriaLogin(tipoLogin, usuario.getCategoria());
+                if (erroCategoria != null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("erro", erroCategoria);
+                    SecurityUtil.registrarAuditoria(email, "Login - Categoria incorreta (tentou: " + tipoLogin + ", real: " + usuario.getCategoria() + ")", false);
+                    response.sendRedirect(paginaLogin);
+                    return;
+                }
+
                 // Login bem-sucedido
                 // Proteção contra Sequestro de Sessão (Session Fixation)
                 request.changeSessionId(); 
@@ -74,13 +135,13 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("erro", "Email não cadastrado no sistema!");
                 SecurityUtil.registrarAuditoria(email, "Login - Email não encontrado", false);
-                response.sendRedirect(request.getContextPath() + "/login.jsp");
+                response.sendRedirect(paginaLogin);
             } else {
                 // Senha incorreta
                 HttpSession session = request.getSession();
                 session.setAttribute("erro", "Senha incorreta!");
                 SecurityUtil.registrarAuditoria(email, "Login - Senha incorreta", false);
-                response.sendRedirect(request.getContextPath() + "/login.jsp");
+                response.sendRedirect(paginaLogin);
             }
 
         } catch (Exception e) {
@@ -88,7 +149,7 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("erro", "Erro ao realizar login!");
             SecurityUtil.registrarAuditoria(email, "Login - Erro na aplicação", false);
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            response.sendRedirect(paginaLogin);
         }
     }
 }
