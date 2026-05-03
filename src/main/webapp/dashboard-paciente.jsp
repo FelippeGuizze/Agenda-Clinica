@@ -21,20 +21,21 @@
             <c:remove var="sucesso" scope="session"/>
         </c:if>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 30px; align-items: stretch;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px; align-items: stretch;">
             <a href="${pageContext.request.contextPath}/agendar-atendimento.jsp" 
-               style="display: flex; align-items: center; justify-content: center; box-sizing: border-box; min-height: 80px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; text-decoration: none; text-align: center; color: white; font-weight: 600; transition: all 0.3s ease;">
-                📅 Agendar Atendimento
+               style="display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; min-height: 120px; padding: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; text-decoration: none; text-align: center; color: white; font-weight: 600; font-size: 1.2em; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);"
+               onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(102, 126, 234, 0.6)';"
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(102, 126, 234, 0.4)';">
+                <span style="font-size: 2em; margin-bottom: 10px;">📅</span>
+                Agendar Atendimento
             </a>
 
             <a href="${pageContext.request.contextPath}/minhas-consultas.jsp" 
-               style="display: flex; align-items: center; justify-content: center; box-sizing: border-box; min-height: 80px; padding: 20px; background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); border-radius: 8px; text-decoration: none; text-align: center; color: white; font-weight: 600; transition: all 0.3s ease;">
-                📋 Minhas Consultas
-            </a>
-
-            <a href="${pageContext.request.contextPath}/custos-totais.jsp" 
-               style="display: flex; align-items: center; justify-content: center; box-sizing: border-box; min-height: 80px; padding: 20px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 8px; text-decoration: none; text-align: center; color: white; font-weight: 700; transition: all 0.3s ease;">
-                💰 Custos Totais
+               style="display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; min-height: 120px; padding: 25px; background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); border-radius: 12px; text-decoration: none; text-align: center; color: white; font-weight: 600; font-size: 1.2em; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);"
+               onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0, 212, 255, 0.6)';"
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0, 212, 255, 0.4)';">
+                <span style="font-size: 2em; margin-bottom: 10px;">📋</span>
+                Minhas Consultas e Custos
             </a>
         </div>
 

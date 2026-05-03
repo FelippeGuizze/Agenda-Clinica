@@ -32,15 +32,30 @@ public class ListarConsultasDisponiveisServlet extends HttpServlet {
             return;
         }
 
+        String tipo = request.getParameter("tipo");
+        String especialidade = request.getParameter("especialidade");
+
+        // Regra de negócio: Por padrão (sem filtros), não mostra nada
+        boolean semFiltros = (tipo == null || tipo.trim().isEmpty() || tipo.equals("Todos")) && 
+                             (especialidade == null || especialidade.trim().isEmpty() || especialidade.equals("Todas"));
+
+        if (semFiltros) {
+            out.println("<tr><td colspan='6' style='padding: 30px; text-align: center; color: #aaa; font-size: 1.1em;'>🔍 Utilize os filtros acima para pesquisar atendimentos disponíveis.</td></tr>");
+            return;
+        }
+
         try {
             AtendimentoDAO atendimentoDAO = new AtendimentoDAO();
             ProfissionalDAO profissionalDAO = new ProfissionalDAO();
 
-            // Buscar todas as consultas disponíveis (status = "Disponível")
-            List<Atendimento> consultasDisponiveis = atendimentoDAO.buscarConsultasDisponiveis();
+            // Buscar consultas filtradas
+            List<Atendimento> consultasDisponiveis = atendimentoDAO.buscarConsultasDisponiveisFiltradas(tipo, especialidade);
+
+            // Adiciona o contador no topo (como uma linha informativa da tabela)
+            out.println("<tr style='background: rgba(0, 212, 255, 0.05);'><td colspan='6' style='padding: 15px; text-align: center; font-weight: bold; color: #00d4ff;'>Encontradas " + consultasDisponiveis.size() + " opções disponíveis para o filtro selecionado</td></tr>");
 
             if (consultasDisponiveis.isEmpty()) {
-                out.println("<tr><td colspan='6' style='padding: 10px; text-align: center; color: #aaa;'>Nenhuma consulta disponível no momento</td></tr>");
+                out.println("<tr><td colspan='6' style='padding: 20px; text-align: center; color: #aaa;'>Nenhuma consulta/exame disponível para este filtro no momento.</td></tr>");
                 return;
             }
 

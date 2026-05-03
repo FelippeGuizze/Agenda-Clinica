@@ -1,4 +1,5 @@
 br/com/agendaclinica/crud/agenda_clinica/controller/ListarTiposConsultaServlet.class
+br/com/agendaclinica/crud/agenda_clinica/controller/ListarCrmServlet.class
 br/com/agendaclinica/crud/agenda_clinica/controller/ListarMinhasConsultasServlet.class
 br/com/agendaclinica/crud/agenda_clinica/controller/CadastroServlet.class
 br/com/agendaclinica/crud/agenda_clinica/model/DisponibilidadeProfissional.class
@@ -13,8 +14,10 @@ br/com/agendaclinica/crud/agenda_clinica/model/Profissional.class
 br/com/agendaclinica/crud/agenda_clinica/controller/VerificaEmailServlet.class
 br/com/agendaclinica/crud/agenda_clinica/util/AppInitListener.class
 br/com/agendaclinica/crud/agenda_clinica/util/SecurityUtil.class
+br/com/agendaclinica/crud/agenda_clinica/controller/AuthFilter.class
 br/com/agendaclinica/crud/agenda_clinica/controller/BackupDatabaseServlet.class
 br/com/agendaclinica/crud/agenda_clinica/controller/AdicionarTipoConsultaServlet.class
+br/com/agendaclinica/crud/agenda_clinica/model/CrmAutorizado.class
 br/com/agendaclinica/crud/agenda_clinica/controller/UsuarioServlet.class
 br/com/agendaclinica/crud/agenda_clinica/dao/DisponibilidadeProfissionalDAO.class
 br/com/agendaclinica/crud/agenda_clinica/controller/ListarDisponibilidadesServlet.class
@@ -22,8 +25,10 @@ br/com/agendaclinica/crud/agenda_clinica/util/HibernateUtil.class
 br/com/agendaclinica/crud/agenda_clinica/dao/ObservacaoAtendimentoDAO.class
 br/com/agendaclinica/crud/agenda_clinica/dao/PacienteDAO.class
 br/com/agendaclinica/crud/agenda_clinica/controller/LogoutServlet.class
+br/com/agendaclinica/crud/agenda_clinica/controller/CadastrarCrmServlet.class
 br/com/agendaclinica/crud/agenda_clinica/model/Paciente.class
 br/com/agendaclinica/crud/agenda_clinica/dao/TipoConsultaDAO.class
+br/com/agendaclinica/crud/agenda_clinica/dao/CrmAutorizadoDAO.class
 br/com/agendaclinica/crud/agenda_clinica/controller/RemoverTipoConsultaServlet.class
 br/com/agendaclinica/crud/agenda_clinica/dao/UsuarioDAO.class
 br/com/agendaclinica/crud/agenda_clinica/controller/AgendarConsultaEspecificaServlet.class
@@ -36,6 +41,7 @@ br/com/agendaclinica/crud/agenda_clinica/controller/AgendarAtendimentoServlet.cl
 br/com/agendaclinica/crud/agenda_clinica/dao/AtendimentoDAO.class
 br/com/agendaclinica/crud/agenda_clinica/controller/ListarConsultasDisponiveisServlet.class
 br/com/agendaclinica/crud/agenda_clinica/model/TipoConsulta.class
+br/com/agendaclinica/crud/agenda_clinica/controller/RemoverCrmServlet.class
 br/com/agendaclinica/crud/agenda_clinica/controller/ListarUsuariosAdminServlet.class
 br/com/agendaclinica/crud/agenda_clinica/controller/GerarGraficoAdminServlet.class
 br/com/agendaclinica/crud/agenda_clinica/controller/RemoverDisponibilidadeServlet.class

@@ -48,6 +48,51 @@ public class AtendimentoDAO {
         }
     }
 
+    public List<Atendimento> buscarConsultasDisponiveisFiltradas(String tipo, String especialidade) {
+        try (Session session = factory.openSession()) {
+            StringBuilder hql = new StringBuilder("FROM Atendimento WHERE status = 'Disponível'");
+            
+            boolean temTipo = tipo != null && !tipo.trim().isEmpty() && !tipo.equals("Todos");
+            boolean temEspecialidade = especialidade != null && !especialidade.trim().isEmpty() && !especialidade.equals("Todas");
+            
+            if (temTipo) {
+                hql.append(" AND tipo = :tipo");
+            }
+            if (temEspecialidade) {
+                hql.append(" AND profissional.especialidade = :especialidade");
+            }
+            
+            hql.append(" ORDER BY datahora ASC");
+            
+            Query<Atendimento> query = session.createQuery(hql.toString(), Atendimento.class);
+            
+            if (temTipo) {
+                query.setParameter("tipo", tipo);
+            }
+            if (temEspecialidade) {
+                query.setParameter("especialidade", especialidade);
+            }
+            
+            return query.list();
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar consultas filtradas: " + e.getMessage());
+            return List.of();
+        }
+    }
+
+    public List<String> listarTiposDisponiveis() {
+        try (Session session = factory.openSession()) {
+            Query<String> query = session.createQuery(
+                "SELECT DISTINCT a.tipo FROM Atendimento a WHERE a.status = 'Disponível' ORDER BY a.tipo",
+                String.class
+            );
+            return query.list();
+        } catch (Exception e) {
+            System.err.println("Erro ao listar tipos disponíveis: " + e.getMessage());
+            return List.of();
+        }
+    }
+
     public List<Atendimento> buscarPorPaciente(Long pacienteId) {
         try (Session session = factory.openSession()) {
             Query<Atendimento> query = session.createQuery(

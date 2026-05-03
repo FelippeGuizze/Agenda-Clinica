@@ -51,16 +51,29 @@ public class ListarMinhasConsultasServlet extends HttpServlet {
             }
             System.out.println("==========================================");
 
+            java.math.BigDecimal totalAcumulado = java.math.BigDecimal.ZERO;
+
             for (Atendimento consulta : minhasConsultas) {
                 String dataFormatada = consulta.getDatahora().format(formatter);
                 
                 // Agora pegamos o valor final gravado, ou o custo formatado antigo:
                 String precoFormatado;
+                java.math.BigDecimal valorFinalDaConsulta = java.math.BigDecimal.ZERO;
+
                 if (consulta.getPrecoFinal() != null) {
-                    precoFormatado = "R$ " + consulta.getPrecoFinal().toString() + 
+                    valorFinalDaConsulta = consulta.getPrecoFinal();
+                    precoFormatado = "R$ " + valorFinalDaConsulta.toString() + 
                                      " <br><span style='font-size: 0.8em; color: #aaa;'>(Base: " + consulta.calcularCusto() + " + Taxa: " + consulta.getValorTaxa() + ")</span>";
                 } else {
-                    precoFormatado = "R$ " + consulta.calcularCusto().toString();
+                    if (consulta.calcularCusto() != null) {
+                        valorFinalDaConsulta = consulta.calcularCusto();
+                    }
+                    precoFormatado = "R$ " + valorFinalDaConsulta.toString();
+                }
+
+                // Somar ao total acumulado (apenas se não for cancelado, para ser justo)
+                if (!"Cancelado".equals(consulta.getStatus())) {
+                    totalAcumulado = totalAcumulado.add(valorFinalDaConsulta);
                 }
 
                 String orientacoes = consulta.gerarOrientacoes();
@@ -100,6 +113,13 @@ public class ListarMinhasConsultasServlet extends HttpServlet {
                 
                 out.println("</tr>");
             }
+
+            // Linha do Totalizador
+            out.println("<tr style='background: rgba(0, 255, 136, 0.1); border-top: 2px solid #00ff88;'>");
+            out.println("<td colspan='8' style='padding: 15px; text-align: right; font-size: 1.3em; font-weight: bold; color: #00ff88;'>");
+            out.println("Custo Total Acumulado: R$ " + totalAcumulado.toString());
+            out.println("</td>");
+            out.println("</tr>");
 
         } catch (Exception e) {
             e.printStackTrace();
