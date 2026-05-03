@@ -101,11 +101,11 @@
             fetch('${pageContext.request.contextPath}/ListarUsuariosAdminServlet')
                 .then(response => response.text())
                 .then(data => {
-                    document.querySelector('tbody').innerHTML = data;
+                    document.getElementById('pacientes-container').innerHTML = data;
                 })
                 .catch(error => {
                     console.error('Erro:', error);
-                    document.querySelector('tbody').innerHTML = '<tr><td colspan="5" style="padding: 20px; text-align: center; color: #ff6b6b;">Erro de comunicação do servidor</td></tr>';
+                    document.getElementById('pacientes-container').innerHTML = '<div class="cards-grid"><div class="card-item" style="color: #ff6b6b; justify-content: center; align-items: center;">Erro de comunicação do servidor</div></div>';
                 });
         }
     </script>

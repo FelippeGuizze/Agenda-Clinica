@@ -140,11 +140,11 @@
             fetch('${pageContext.request.contextPath}/ListarMinhasConsultasServlet')
                 .then(response => response.text())
                 .then(data => {
-                    document.querySelector('tbody').innerHTML = data;
+                    document.getElementById('consultas-container').innerHTML = data;
                 })
                 .catch(error => {
                     console.error('Erro ao carregar consultas:', error);
-                    document.querySelector('tbody').innerHTML = '<tr><td colspan="8" style="padding: 20px; text-align: center; color: #ff6b6b;">Erro ao carregar dados</td></tr>';
+                    document.getElementById('consultas-container').innerHTML = '<div class="cards-grid"><div class="card-item" style="color: #ff6b6b; justify-content: center; align-items: center;">Erro ao carregar dados</div></div>';
                 });
         }
     </script>
