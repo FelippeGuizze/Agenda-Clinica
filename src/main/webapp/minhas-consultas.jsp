@@ -13,10 +13,75 @@
             @page { margin: 0; }
             body { background: white; color: black; margin: 2cm; }
             .voltar-link, .btn-print, .erro, .sucesso, div[style*="rgba(0, 212, 255, 0.1)"] { display: none !important; }
-            table { width: 100%; border-collapse: collapse; color: black !important; }
-            th, td { border: 1px solid #ccc !important; color: black !important; padding: 8px; text-align: left; }
-            h1 { color: black !important; }
-            span { color: black !important; }
+            .cards-grid { display: block !important; }
+            .card-item { border: 1px solid #ccc !important; color: black !important; padding: 15px; margin-bottom: 15px; break-inside: avoid; }
+            h1, h3, span, strong, div { color: black !important; }
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .card-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            margin-bottom: 5px;
+        }
+        .card-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #00d4ff;
+            margin: 0;
+        }
+        .card-subtitle {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+        .card-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95em;
+        }
+        .card-price {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #00ff88;
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-totalizador {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+            border: 2px solid #00ff88;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
         }
     </style>
 </head>
@@ -52,29 +117,12 @@
 
             <button class="btn-print" onclick="window.print()" style="margin-bottom: 20px; padding: 10px 20px; background: #ffca28; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: #333;">🖨️ Exportar Relatório PDF</button>
 
-            <div style="overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="border-bottom: 2px solid #00d4ff;">
-                            <th style="padding: 12px; text-align: left;">Profissional</th>
-                            <th style="padding: 12px; text-align: left;">Especialidade</th>
-                            <th style="padding: 12px; text-align: left; min-width: 180px;">Tipo</th>
-                            <th style="padding: 12px; text-align: left;">Data/Hora</th>
-                            <th style="padding: 12px; text-align: left;">Preço Calculado</th>
-                            <th style="padding: 12px; text-align: left;">Status</th>
-                            <th style="padding: 12px; text-align: left;">Orientações</th>
-                            <th style="padding: 12px; text-align: center;">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Será preenchida dinamicamente -->
-                        <tr>
-                            <td colspan="8" style="padding: 20px; text-align: center; color: #aaa;">
-                                Carregando suas consultas...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="cards-wrapper" id="consultas-container">
+                <div class="cards-grid">
+                    <div class="card-item" style="justify-content: center; align-items: center; color: #aaa; min-height: 200px; grid-column: 1 / -1;">
+                        Carregando suas consultas...
+                    </div>
+                </div>
             </div>
 
             <a href="${pageContext.request.contextPath}/dashboard-paciente.jsp" class="voltar-link">Voltar ao Dashboard</a>

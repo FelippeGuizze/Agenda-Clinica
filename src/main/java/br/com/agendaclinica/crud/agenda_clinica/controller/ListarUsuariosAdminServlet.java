@@ -42,6 +42,8 @@ public class ListarUsuariosAdminServlet extends HttpServlet {
             List<Usuario> todosUsuarios = usuarioDAO.listarTodos();
             
             boolean temPaciente = false;
+            
+            StringBuilder htmlCards = new StringBuilder("<div class='cards-grid'>");
 
             for (Usuario u : todosUsuarios) {
                 // SÓ QUEREMOS PACIENTES (categoria 1)
@@ -62,22 +64,42 @@ public class ListarUsuariosAdminServlet extends HttpServlet {
                     }
                 }
                 
-                out.println("<tr style='border-bottom: 1px solid rgba(255, 255, 255, 0.1);'>");
-                out.println("<td style='padding: 12px; color:#aaa'>" + u.getPacienteId() + "</td>");
-                out.println("<td style='padding: 12px; font-weight: bold;'>" + u.getNome() + "</td>");
-                out.println("<td style='padding: 12px;'>" + u.getEmail() + "</td>");
-                out.println("<td style='padding: 12px; color:#ffeb3b;'>R$ " + debtBruto.toString() + "</td>");
-                out.println("<td style='padding: 12px; font-weight: bold; color:#00ff88;'>R$ " + debtLiquido.toString() + "</td>");
-                out.println("</tr>");
+                htmlCards.append("<div class='card-item'>");
+                htmlCards.append("<div class='card-header'>");
+                htmlCards.append("<div>");
+                htmlCards.append("<h3 class='card-title'>").append(u.getNome()).append("</h3>");
+                htmlCards.append("<div class='card-subtitle'>ID Paciente: #").append(u.getPacienteId()).append("</div>");
+                htmlCards.append("</div>");
+                htmlCards.append("</div>");
+                
+                htmlCards.append("<div class='card-info'><strong>📧 Email:</strong> ").append(u.getEmail()).append("</div>");
+                
+                htmlCards.append("<div class='card-price'>");
+                htmlCards.append("<div>");
+                htmlCards.append("<div style='font-size: 0.6em; color: #ffeb3b; text-transform: uppercase;'>Fatura Bruta</div>");
+                htmlCards.append("<div style='font-size: 0.8em; color: #ffeb3b;'>R$ ").append(debtBruto.toString()).append("</div>");
+                htmlCards.append("</div>");
+                
+                htmlCards.append("<div style='text-align: right;'>");
+                htmlCards.append("<div style='font-size: 0.6em; color: #00ff88; text-transform: uppercase;'>Fatura Líquida (+10%)</div>");
+                htmlCards.append("<div>R$ ").append(debtLiquido.toString()).append("</div>");
+                htmlCards.append("</div>");
+                htmlCards.append("</div>"); // card-price
+                
+                htmlCards.append("</div>"); // card-item
             }
             
+            htmlCards.append("</div>"); // cards-grid
+            
             if(!temPaciente) {
-                out.println("<tr><td colspan='5' style='padding: 20px; text-align: center; color: #aaa;'>Não existem pacientes cadastrados na clínica.</td></tr>");
+                out.println("<div class='cards-grid'><div class='card-item' style='justify-content: center; align-items: center; color: #aaa; min-height: 200px; grid-column: 1 / -1;'>Não existem pacientes cadastrados na clínica.</div></div>");
+            } else {
+                out.println(htmlCards.toString());
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            out.println("<tr><td colspan='5' style='padding: 20px; text-align: center; color: #ff6b6b;'>Erro no processamento do Relatório Financeiro</td></tr>");
+            out.println("<div class='erro' style='text-align: center; margin-top: 20px;'>❌ Erro no processamento do Relatório Financeiro</div>");
         }
     }
 }
