@@ -31,4 +31,25 @@ public class PacienteDAO {
             return null;
         }
     }
+
+    public void atualizar(Paciente paciente) {
+        try (Session session = factory.openSession()) {
+            Transaction t = session.beginTransaction();
+            session.merge(paciente);
+            t.commit();
+        } catch (Exception e) {
+            System.err.println("Erro ao atualizar paciente: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public java.util.List<Paciente> listarTodos() {
+        try (Session session = factory.openSession()) {
+            Query<Paciente> query = session.createQuery("FROM Paciente", Paciente.class);
+            return query.list();
+        } catch (Exception e) {
+            System.err.println("Erro ao listar pacientes: " + e.getMessage());
+            return java.util.List.of();
+        }
+    }
 }

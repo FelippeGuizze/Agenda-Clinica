@@ -70,19 +70,24 @@
                 .then(response => response.json())
                 .then(data => {
                     
+                    if (data.erro) {
+                        alert(data.erro);
+                        return;
+                    }
+
+                    // O backend retorna anoSelecionado indicando qual ano foi de fato carregado
+                    const anoCarregado = data.anoSelecionado;
+
                     // Se for a primeira vez carregando, preenche dinamicamente todas as options baseado na DB
                     if (!jaPopulatedAnos) {
                         const selectAno = document.getElementById('anoSelect');
                         selectAno.innerHTML = ''; // Limpa o "Carregando"
-                        
-                        let selectValue = anoDesejado;
-                        if(anoDesejado === '') selectValue = data.anosDisponiveis[0];
 
-                        data.anosDisponiveis.forEach(anoStr => {
+                        data.anosDisponiveis.forEach(anoVal => {
                             const opt = document.createElement('option');
-                            opt.value = anoStr;
-                            opt.innerText = anoStr;
-                            if (anoStr.toString() === selectValue.toString()) {
+                            opt.value = anoVal;
+                            opt.innerText = anoVal;
+                            if (anoVal === anoCarregado) {
                                 opt.selected = true;
                             }
                             selectAno.appendChild(opt);
@@ -90,14 +95,12 @@
                         jaPopulatedAnos = true;
                     }
                     
-                    const renderingAno = document.getElementById('anoSelect').value;
-                    
                     // Update text blocks above
                     const frmBRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
                     document.getElementById('displayTotalBruto').innerText = frmBRL.format(data.totalBruto);
                     document.getElementById('displayTotalLiquido').innerText = frmBRL.format(data.totalLiquido);
 
-                    renderizarGrafico(data.meses, data.valoresLiquidos, data.valoresBrutos, renderingAno);
+                    renderizarGrafico(data.meses, data.valoresLiquidos, data.valoresBrutos, anoCarregado);
                 })
                 .catch(error => {
                     console.error('Erro ao buscar relatórios:', error);

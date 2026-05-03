@@ -3,6 +3,7 @@ package br.com.agendaclinica.crud.agenda_clinica.dao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import br.com.agendaclinica.crud.agenda_clinica.model.Profissional;
 import br.com.agendaclinica.crud.agenda_clinica.util.HibernateUtil;
 
@@ -28,6 +29,27 @@ public class ProfissionalDAO {
             System.err.println("Erro ao buscar profissional: " + e.getMessage());
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public void atualizar(Profissional profissional) {
+        try (Session session = factory.openSession()) {
+            Transaction t = session.beginTransaction();
+            session.merge(profissional);
+            t.commit();
+        } catch (Exception e) {
+            System.err.println("Erro ao atualizar profissional: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public java.util.List<Profissional> listarTodos() {
+        try (Session session = factory.openSession()) {
+            Query<Profissional> query = session.createQuery("FROM Profissional", Profissional.class);
+            return query.list();
+        } catch (Exception e) {
+            System.err.println("Erro ao listar profissionais: " + e.getMessage());
+            return java.util.List.of();
         }
     }
 }

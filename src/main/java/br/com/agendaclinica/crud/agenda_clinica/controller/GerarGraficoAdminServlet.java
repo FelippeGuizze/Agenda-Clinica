@@ -36,25 +36,40 @@ public class GerarGraficoAdminServlet extends HttpServlet {
             AtendimentoDAO atendimentoDAO = new AtendimentoDAO();
             List<Atendimento> todosAtendimentos = atendimentoDAO.listarTodos(); 
             
-            // Descobrir quais anos possuem faturamento para popular o Select no front
+            // Descobrir TODOS os anos que possuem atendimentos (qualquer ano, sem restrição)
+            // Usando TreeSet com reverseOrder para ter os anos mais recentes primeiro
             java.util.Set<Integer> anosDisponiveisSet = new java.util.TreeSet<>(java.util.Collections.reverseOrder());
 
             for (Atendimento att : todosAtendimentos) {
-                if (att.getPaciente() != null && !att.getStatus().equalsIgnoreCase("Cancelado")) {
+                // Inclui qualquer atendimento que tenha datahora, independente de status ou paciente
+                if (att.getDatahora() != null) {
                     anosDisponiveisSet.add(att.getDatahora().getYear());
                 }
             }
 
+            // Se não houver nenhum atendimento, adiciona o ano atual como fallback
             if (anosDisponiveisSet.isEmpty()) {
                 anosDisponiveisSet.add(java.time.LocalDate.now().getYear());
             }
 
+            // Determinar o ano alvo a exibir
             int anoAlvo;
             String anoParam = request.getParameter("ano");
             if (anoParam != null && !anoParam.isEmpty()) {
-                anoAlvo = Integer.parseInt(anoParam);
+                try {
+                    anoAlvo = Integer.parseInt(anoParam);
+                } catch (NumberFormatException e) {
+                    // Se o parâmetro for inválido, pega o mais recente
+                    anoAlvo = anosDisponiveisSet.iterator().next();
+                }
             } else {
                 anoAlvo = anosDisponiveisSet.iterator().next(); // Pega o ano mais recente disponível
+            }
+
+            // Garantir que o anoAlvo esteja na lista (se alguém mandou um ano que não existe na DB)
+            // Adiciona ele para que o select fique consistente
+            if (!anosDisponiveisSet.contains(anoAlvo)) {
+                anosDisponiveisSet.add(anoAlvo);
             }
 
             // Inicializar array de 12 meses
@@ -70,8 +85,8 @@ public class GerarGraficoAdminServlet extends HttpServlet {
 
             for (Atendimento att : todosAtendimentos) {
 
-                // Filtra pelo ano
-                if (att.getDatahora().getYear() == anoAlvo) {
+                // Filtra pelo ano alvo
+                if (att.getDatahora() != null && att.getDatahora().getYear() == anoAlvo) {
                     if (att.getPaciente() != null && !att.getStatus().equalsIgnoreCase("Cancelado")) {
                         
                         BigDecimal base = att.calcularCusto();
@@ -90,11 +105,12 @@ public class GerarGraficoAdminServlet extends HttpServlet {
                     }
                 }
             }
-            
-
 
             com.google.gson.JsonObject root = new com.google.gson.JsonObject();
             
+            // Ano selecionado (para que o frontend saiba qual foi carregado)
+            root.addProperty("anoSelecionado", anoAlvo);
+
             com.google.gson.JsonArray anos = new com.google.gson.JsonArray();
             for(Integer ano : anosDisponiveisSet) anos.add(ano);
             root.add("anosDisponiveis", anos);
