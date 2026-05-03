@@ -47,7 +47,7 @@
                 <label for="senha">Senha:</label>
                 <input type="password" id="senha" name="senha" required style="padding-right: 40px;">
                 <button type="button" onclick="toggleSenha('senha', 'eyeIconSenha')" style="position: absolute; right: 10px; top: 38px; background: none; border: none; cursor: pointer; color: #aaa; font-size: 1.2em;">
-                    <span id="eyeIconSenha">👁️</span>
+                    <span id="eyeIconSenha">👁</span>
                 </button>
             </div>
 
@@ -55,7 +55,7 @@
                 <label for="confirmar_senha">Confirme a Senha:</label>
                 <input type="password" id="confirmar_senha" name="confirmar_senha" required style="padding-right: 40px;">
                 <button type="button" onclick="toggleSenha('confirmar_senha', 'eyeIconConfirm')" style="position: absolute; right: 10px; top: 38px; background: none; border: none; cursor: pointer; color: #aaa; font-size: 1.2em;">
-                    <span id="eyeIconConfirm">👁️</span>
+                    <span id="eyeIconConfirm">👁</span>
                 </button>
             </div>
 
@@ -95,7 +95,7 @@
                 icon.innerText = "🙈";
             } else {
                 input.type = "password";
-                icon.innerText = "👁️";
+                icon.innerText = "👁";
             }
         }
 

@@ -36,9 +36,12 @@
                 <input type="email" id="email" name="email" required>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" style="position: relative;">
                 <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" required>
+                <input type="password" id="senha" name="senha" required style="padding-right: 40px;">
+                <button type="button" onclick="toggleSenha('senha', 'eyeIconSenha')" style="position: absolute; right: 10px; top: 38px; background: none; border: none; cursor: pointer; color: #aaa; font-size: 1.2em;">
+                    <span id="eyeIconSenha">👁</span>
+                </button>
             </div>
 
             <button type="submit" class="btn-submit">Entrar</button>
@@ -46,5 +49,19 @@
 
         <a href="${pageContext.request.contextPath}/index.jsp" class="voltar-link">← Voltar para início</a>
     </div>
+
+    <script>
+        function toggleSenha(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.innerText = "🙈";
+            } else {
+                input.type = "password";
+                icon.innerText = "👁";
+            }
+        }
+    </script>
 </body>
 </html>

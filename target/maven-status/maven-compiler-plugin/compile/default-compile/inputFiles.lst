@@ -2,6 +2,7 @@
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/AdicionarTipoConsultaServlet.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/AgendarAtendimentoServlet.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/AgendarConsultaEspecificaServlet.java
+/home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/AuthFilter.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/BackupDatabaseServlet.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/CadastrarCrmServlet.java
 /home/uniedit/eclipse-workspace/agenda-clinica/src/main/java/br/com/agendaclinica/crud/agenda_clinica/controller/CadastroServlet.java
