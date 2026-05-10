@@ -29,7 +29,8 @@ DIAGRAMA DE CLASSES E ACOPLAMENTO (UML TEXTUAL BASE)
 +-----------------------+         |    | - especialidade: Str  |
 | + construct()         |         |    | - crmNumero: String   |
 | + getters/setters()   |         |    | - crmUf: String       |
-+-----------------------+         |    +-----------------------+
++-----------------------+         |    | - tipoNicho: String   |
+                                  |    +-----------------------+
                                   |    | + construct()         |
                                   |    | + getCrmFormatado()   |
                                   |    | + getters/setters()   |
@@ -73,6 +74,7 @@ Relacionamentos de Apoio ao Agendamento:
 -------------------------------------------------------------
 
 +-----------------------------------------------------------+
+|             <<Deprecated / Removida>>                     |
 |             DisponibilidadeProfissional                   |
 +-----------------------------------------------------------+
 | - id: Long                                                |
@@ -95,11 +97,13 @@ Controle de Acesso Médico (CRM):
 | - id: Long                                                |
 | - crmNumero: String (max 6 dígitos)                       |
 | - crmUf: String (2 letras, sigla estado)                  |
+| - nomeAutorizado: String                                  |
 | - emailAutorizado: String (UNIQUE)                        |
+| - tipoNicho: String ("Consulta" ou "Exame")               |
 | - usado: Boolean (default false)                          |
 | - dataCriacao: LocalDateTime                              |
 +-----------------------------------------------------------+
-| + construct(crmNumero, crmUf, emailAutorizado)            |
+| + construct(crmNumero, crmUf, email, nome, tipoNicho)     |
 | + getCrmFormatado(): String  → "CRM/SP 123456"           |
 | + getters/setters()                                       |
 +-----------------------------------------------------------+

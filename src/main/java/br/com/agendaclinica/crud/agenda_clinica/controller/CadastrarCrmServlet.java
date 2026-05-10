@@ -37,21 +37,34 @@ public class CadastrarCrmServlet extends HttpServlet {
 
         String crmNumero = request.getParameter("crm_numero");
         String crmUf = request.getParameter("crm_uf");
+        String nomeAutorizado = request.getParameter("nome_autorizado");
         String emailAutorizado = request.getParameter("email_autorizado");
+        String tipoNicho = request.getParameter("tipo_nicho");
 
         try {
             // Validações
             if (crmNumero == null || crmNumero.trim().isEmpty() ||
                 crmUf == null || crmUf.trim().isEmpty() ||
-                emailAutorizado == null || emailAutorizado.trim().isEmpty()) {
-                session.setAttribute("erro", "Todos os campos são obrigatórios!");
+                nomeAutorizado == null || nomeAutorizado.trim().isEmpty() ||
+                emailAutorizado == null || emailAutorizado.trim().isEmpty() ||
+                tipoNicho == null || tipoNicho.trim().isEmpty()) {
+                session.setAttribute("erro", "Todos os campos são obrigatórios, incluindo o Nome do Médico!");
                 response.sendRedirect(request.getContextPath() + "/admin-crm.jsp");
                 return;
             }
 
             crmNumero = crmNumero.trim();
             crmUf = crmUf.trim().toUpperCase();
+            nomeAutorizado = nomeAutorizado.trim();
             emailAutorizado = emailAutorizado.trim();
+            tipoNicho = tipoNicho.trim();
+
+            // Validar tipoNicho
+            if (!tipoNicho.equals("Consulta") && !tipoNicho.equals("Exame")) {
+                session.setAttribute("erro", "Tipo de Nicho inválido! Selecione 'Consulta' ou 'Exame'.");
+                response.sendRedirect(request.getContextPath() + "/admin-crm.jsp");
+                return;
+            }
 
             // Validar formato CRM (apenas dígitos, máx 6)
             if (!crmNumero.matches("^\\d{1,6}$")) {
@@ -97,11 +110,11 @@ public class CadastrarCrmServlet extends HttpServlet {
                 return;
             }
 
-            // Salvar
-            CrmAutorizado crm = new CrmAutorizado(crmNumero, crmUf, emailAutorizado);
+            // Salvar com tipoNicho e nomeAutorizado
+            CrmAutorizado crm = new CrmAutorizado(crmNumero, crmUf, emailAutorizado, nomeAutorizado, tipoNicho);
             crmDAO.salvar(crm);
 
-            session.setAttribute("sucesso", "CRM/" + crmUf + " " + crmNumero + " autorizado com sucesso para " + emailAutorizado + "!");
+            session.setAttribute("sucesso", "CRM/" + crmUf + " " + crmNumero + " autorizado com sucesso para " + emailAutorizado + " (Nicho: " + tipoNicho + ")!");
             SecurityUtil.registrarAuditoria(
                 (String) session.getAttribute("usuarioEmail"),
                 "Autorização CRM: CRM/" + crmUf + " " + crmNumero + " → " + emailAutorizado,

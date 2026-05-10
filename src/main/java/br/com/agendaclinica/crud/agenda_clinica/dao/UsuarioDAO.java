@@ -68,4 +68,15 @@ public class UsuarioDAO {
             return java.util.List.of();
         }
     }
+
+    public void atualizar(Usuario usuario) {
+        try (Session session = factory.openSession()) {
+            Transaction t = session.beginTransaction();
+            session.merge(usuario);
+            t.commit();
+        } catch (Exception e) {
+            System.err.println("Erro ao atualizar usuário: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }

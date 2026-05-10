@@ -32,10 +32,12 @@
             <input type="hidden" name="categoria" value="2">
             <input type="hidden" name="origemCadastro" value="medico">
 
-            <div class="form-group">
-                <label for="nome">Nome Completo:</label>
-                <input type="text" id="nome" name="nome" required>
+            <div style="margin-bottom: 20px; padding: 12px; background: rgba(0, 212, 255, 0.08); border-radius: 5px; border-left: 4px solid #00d4ff;">
+                <strong>👤 Nome do Médico:</strong> Seu nome será carregado automaticamente a partir da pré-autorização do seu CRM realizada pelo administrador.
             </div>
+            
+            <%-- O nome será sobrescrito pelo backend usando o nome do CrmAutorizado --%>
+            <input type="hidden" name="nome" value="A ser definido">
 
             <div class="form-group">
                 <label for="email">Email:</label>
@@ -61,6 +63,10 @@
 
             <div style="margin-bottom: 20px; padding: 12px; background: rgba(102, 126, 234, 0.1); border-radius: 5px; border-left: 4px solid #667eea;">
                 <strong>ℹ️ Importante:</strong> Para se cadastrar como médico, seu CRM e email devem estar previamente autorizados pelo administrador do sistema.
+            </div>
+
+            <div style="margin-bottom: 20px; padding: 12px; background: rgba(0, 212, 255, 0.08); border-radius: 5px; border-left: 4px solid #00d4ff;">
+                <strong>🏥 Tipo de Atendimento:</strong> O tipo de atendimento que você poderá oferecer (Consulta ou Exame) é definido pelo administrador no momento da autorização do seu CRM. Você não precisa escolher — será atribuído automaticamente.
             </div>
 
             <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
@@ -107,19 +113,8 @@
                 </div>
             </div>
 
-            <div class="form-group" style="margin-top: 15px;">
-                <label for="especialidade">Especialidade:</label>
-                <select id="especialidade" name="especialidade" required>
-                    <option value="" disabled selected>-- Escolha a Especialidade --</option>
-                    <option value="Clínico Geral">Clínico Geral</option>
-                    <option value="Cardiologia">Cardiologia</option>
-                    <option value="Dermatologia">Dermatologia</option>
-                    <option value="Neurologia">Neurologia</option>
-                    <option value="Ortopedia">Ortopedia</option>
-                    <option value="Pediatria">Pediatria</option>
-                    <option value="Psiquiatria">Psiquiatria</option>
-                </select>
-            </div>
+            <%-- Especialidade como campo hidden com valor padrão: o nicho real é herdado do CrmAutorizado --%>
+            <input type="hidden" name="especialidade" value="A definir">
 
             <button type="submit" class="btn-submit">Criar Conta</button>
         </form>

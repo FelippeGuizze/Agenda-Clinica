@@ -25,6 +25,9 @@ public class Profissional {
     @Column(name = "crm_uf", length = 2, nullable = true)
     private String crmUf;
 
+    @Column(name = "tipo_nicho", length = 20, nullable = true)
+    private String tipoNicho; // "Consulta" ou "Exame" — definido pelo admin ao autorizar o CRM
+
     // Construtores
     public Profissional() {}
 
@@ -56,5 +59,7 @@ public class Profissional {
     public void setCrmNumero(String crmNumero) { this.crmNumero = crmNumero; }
     public String getCrmUf() { return crmUf; }
     public void setCrmUf(String crmUf) { this.crmUf = crmUf; }
+    public String getTipoNicho() { return tipoNicho; }
+    public void setTipoNicho(String tipoNicho) { this.tipoNicho = tipoNicho; }
 }
 

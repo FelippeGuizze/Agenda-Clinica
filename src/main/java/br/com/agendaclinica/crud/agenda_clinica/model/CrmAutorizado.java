@@ -26,8 +26,14 @@ public class CrmAutorizado {
     @Column(name = "email_autorizado", nullable = false, unique = true)
     private String emailAutorizado;
 
+    @Column(name = "nome_autorizado", nullable = false)
+    private String nomeAutorizado;
+
     @Column(nullable = false, columnDefinition = "TINYINT(1) DEFAULT 0")
     private Boolean usado = false;
+
+    @Column(name = "tipo_nicho", length = 20, nullable = true)
+    private String tipoNicho; // "Consulta" ou "Exame" — definido pelo admin
 
     @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao;
@@ -39,6 +45,16 @@ public class CrmAutorizado {
         this.crmNumero = crmNumero;
         this.crmUf = crmUf.toUpperCase();
         this.emailAutorizado = emailAutorizado;
+        this.usado = false;
+        this.dataCriacao = LocalDateTime.now();
+    }
+
+    public CrmAutorizado(String crmNumero, String crmUf, String emailAutorizado, String nomeAutorizado, String tipoNicho) {
+        this.crmNumero = crmNumero;
+        this.crmUf = crmUf.toUpperCase();
+        this.emailAutorizado = emailAutorizado;
+        this.nomeAutorizado = nomeAutorizado;
+        this.tipoNicho = tipoNicho;
         this.usado = false;
         this.dataCriacao = LocalDateTime.now();
     }
@@ -59,8 +75,12 @@ public class CrmAutorizado {
     public void setCrmUf(String crmUf) { this.crmUf = crmUf.toUpperCase(); }
     public String getEmailAutorizado() { return emailAutorizado; }
     public void setEmailAutorizado(String emailAutorizado) { this.emailAutorizado = emailAutorizado; }
+    public String getNomeAutorizado() { return nomeAutorizado; }
+    public void setNomeAutorizado(String nomeAutorizado) { this.nomeAutorizado = nomeAutorizado; }
     public Boolean getUsado() { return usado; }
     public void setUsado(Boolean usado) { this.usado = usado; }
+    public String getTipoNicho() { return tipoNicho; }
+    public void setTipoNicho(String tipoNicho) { this.tipoNicho = tipoNicho; }
     public LocalDateTime getDataCriacao() { return dataCriacao; }
     public void setDataCriacao(LocalDateTime dataCriacao) { this.dataCriacao = dataCriacao; }
 }

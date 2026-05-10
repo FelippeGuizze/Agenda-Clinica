@@ -24,7 +24,14 @@
         <div style="display: flex; justify-content: center; margin-bottom: 30px;">
             <a href="${pageContext.request.contextPath}/minha-agenda-medico.jsp" 
                style="display: inline-block; padding: 20px 40px; background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); border-radius: 8px; text-decoration: none; text-align: center; color: white; font-weight: 600; font-size: 1.2em; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);">
-                🗓️ Oferecer Novo Horário no Calendário
+                <c:choose>
+                    <c:when test="${sessionScope.profissionalNicho == 'Exame'}">
+                        🔬 Oferecer Horários de Exame
+                    </c:when>
+                    <c:otherwise>
+                        🩺 Oferecer Horários de Consulta
+                    </c:otherwise>
+                </c:choose>
             </a>
         </div>
 

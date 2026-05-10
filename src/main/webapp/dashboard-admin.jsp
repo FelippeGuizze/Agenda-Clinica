@@ -31,7 +31,7 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; align-items: stretch;">
             <a href="${pageContext.request.contextPath}/admin-usuarios.jsp" 
                style="display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; text-decoration: none; text-align: center; color: white; font-weight: 600; transition: all 0.3s ease; box-sizing: border-box; min-height: 80px;">
-                👥 Gerenciar Usuários
+                👥 Gerenciar Usuários da Clínica
             </a>
 
             <a href="${pageContext.request.contextPath}/admin-relatorios.jsp" 

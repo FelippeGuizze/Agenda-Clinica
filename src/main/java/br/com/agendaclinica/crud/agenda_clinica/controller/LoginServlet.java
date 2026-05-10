@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import br.com.agendaclinica.crud.agenda_clinica.model.Usuario;
 import br.com.agendaclinica.crud.agenda_clinica.dao.UsuarioDAO;
+import br.com.agendaclinica.crud.agenda_clinica.model.Profissional;
+import br.com.agendaclinica.crud.agenda_clinica.dao.ProfissionalDAO;
 import br.com.agendaclinica.crud.agenda_clinica.util.SecurityUtil;
 import java.io.IOException;
 
@@ -124,7 +126,16 @@ public class LoginServlet extends HttpServlet {
                     // Paciente
                     response.sendRedirect(request.getContextPath() + "/dashboard-paciente.jsp");
                 } else if (usuario.getCategoria() == 2) {
-                    // Médico/Profissional
+                    // Médico/Profissional — carregar nicho na sessão
+                    if (usuario.getProfissionalId() != null) {
+                        ProfissionalDAO profDAO = new ProfissionalDAO();
+                        Profissional prof = profDAO.buscarPorId(usuario.getProfissionalId());
+                        if (prof != null && prof.getTipoNicho() != null) {
+                            session.setAttribute("profissionalNicho", prof.getTipoNicho());
+                        } else {
+                            session.setAttribute("profissionalNicho", "Consulta"); // padrão
+                        }
+                    }
                     response.sendRedirect(request.getContextPath() + "/dashboard-medico.jsp");
                 } else if (usuario.getCategoria() == 0) {
                     // Admin

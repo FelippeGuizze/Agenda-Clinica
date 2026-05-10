@@ -14,7 +14,8 @@
         <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.Consulta"/>
         <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.Exame"/>
         <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.ObservacaoAtendimento"/>
-        <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.DisponibilidadeProfissional"/>
+        <!-- DisponibilidadeProfissional removida do mapeamento: tabela não mais gerenciada pelo Hibernate -->
+        <!-- <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.DisponibilidadeProfissional"/> -->
         <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.TipoConsulta"/>
         <mapping class="br.com.agendaclinica.crud.agenda_clinica.model.CrmAutorizado"/>
     </session-factory>

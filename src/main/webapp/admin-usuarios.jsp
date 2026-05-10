@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciamento de Pacientes - ADMIN</title>
+    <title>Gerenciar Usuários - ADMIN</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/>
     <style>
         .cards-grid {
@@ -70,7 +70,7 @@
 </head>
 <body>
     <div class="table-container">
-        <h1 style="font-size: 2em; margin-bottom: 30px;">Gerenciar Dívidas/Faturas de Pacientes</h1>
+        <h1 style="font-size: 2em; margin-bottom: 30px;">Gerenciar Usuários da Clínica</h1>
 
         <c:if test="${sessionScope.usuarioCategoria != 0}">
             <div class="erro">

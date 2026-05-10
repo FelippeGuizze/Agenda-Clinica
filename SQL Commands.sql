@@ -42,26 +42,30 @@ CREATE TABLE atendimentos (
     FOREIGN KEY (profissional_id) REFERENCES profissionais(id)
 );
 
-CREATE TABLE disponibilidade_profissionais (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    profissional_id BIGINT NOT NULL,
-    horario VARCHAR(10) NOT NULL,
-    ativo TINYINT(1) NOT NULL DEFAULT 1,
-    FOREIGN KEY (profissional_id) REFERENCES profissionais(id)
-);
+-- Tabela desativada/depreciada (não mais mapeada pelo Hibernate)
+-- CREATE TABLE disponibilidade_profissionais (
+--     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+--     profissional_id BIGINT NOT NULL,
+--     horario VARCHAR(10) NOT NULL,
+--     ativo TINYINT(1) NOT NULL DEFAULT 1,
+--     FOREIGN KEY (profissional_id) REFERENCES profissionais(id)
+-- );
 
 CREATE TABLE crm_autorizados (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     crm_numero VARCHAR(6) NOT NULL,
     crm_uf VARCHAR(2) NOT NULL,
+    nome_autorizado VARCHAR(255) NOT NULL,
     email_autorizado VARCHAR(255) NOT NULL UNIQUE,
+    tipo_nicho VARCHAR(20) NULL,
     usado TINYINT(1) NOT NULL DEFAULT 0,
     data_criacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE KEY uk_crm (crm_numero, crm_uf)
 );
 
--- Campos CRM na tabela profissionais (adicionados após criação)
+-- Campos CRM e Nicho na tabela profissionais (adicionados após criação)
 ALTER TABLE profissionais ADD COLUMN crm_numero VARCHAR(6) NULL;
 ALTER TABLE profissionais ADD COLUMN crm_uf VARCHAR(2) NULL;
+ALTER TABLE profissionais ADD COLUMN tipo_nicho VARCHAR(20) NULL;
 
 

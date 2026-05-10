@@ -23,9 +23,11 @@ import com.google.gson.JsonParser;
 import br.com.agendaclinica.crud.agenda_clinica.dao.AtendimentoDAO;
 import br.com.agendaclinica.crud.agenda_clinica.dao.PacienteDAO;
 import br.com.agendaclinica.crud.agenda_clinica.dao.ProfissionalDAO;
+import br.com.agendaclinica.crud.agenda_clinica.dao.UsuarioDAO;
 import br.com.agendaclinica.crud.agenda_clinica.model.Atendimento;
 import br.com.agendaclinica.crud.agenda_clinica.model.Paciente;
 import br.com.agendaclinica.crud.agenda_clinica.model.Profissional;
+import br.com.agendaclinica.crud.agenda_clinica.model.Usuario;
 
 @WebServlet("/RestaurarDatabaseServlet")
 @MultipartConfig(
@@ -62,6 +64,7 @@ public class RestaurarDatabaseServlet extends HttpServlet {
             AtendimentoDAO atendimentoDAO = new AtendimentoDAO();
             PacienteDAO pacienteDAO = new PacienteDAO();
             ProfissionalDAO profissionalDAO = new ProfissionalDAO();
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
             
             int modificados = 0;
 
@@ -74,13 +77,27 @@ public class RestaurarDatabaseServlet extends HttpServlet {
                     Paciente existente = pacienteDAO.buscarPorId(id);
 
                     if (existente != null) {
+                        String novoNome = null;
                         if (pJson.has("nome") && !pJson.get("nome").isJsonNull()) {
-                            existente.setNome(pJson.get("nome").getAsString());
+                            novoNome = pJson.get("nome").getAsString();
+                            existente.setNome(novoNome);
                         }
                         if (pJson.has("contato") && !pJson.get("contato").isJsonNull()) {
                             existente.setContato(pJson.get("contato").getAsString());
                         }
                         pacienteDAO.atualizar(existente);
+
+                        // Propagar nome para tabela usuarios (eliminar duplicidade)
+                        if (novoNome != null) {
+                            java.util.List<Usuario> todos = usuarioDAO.listarTodos();
+                            for (Usuario u : todos) {
+                                if (existente.getId().equals(u.getPacienteId())) {
+                                    u.setNome(novoNome);
+                                    usuarioDAO.atualizar(u);
+                                    break;
+                                }
+                            }
+                        }
                         modificados++;
                     }
                 }
@@ -95,8 +112,10 @@ public class RestaurarDatabaseServlet extends HttpServlet {
                     Profissional existente = profissionalDAO.buscarPorId(id);
 
                     if (existente != null) {
+                        String novoNome = null;
                         if (profJson.has("nome") && !profJson.get("nome").isJsonNull()) {
-                            existente.setNome(profJson.get("nome").getAsString());
+                            novoNome = profJson.get("nome").getAsString();
+                            existente.setNome(novoNome);
                         }
                         if (profJson.has("categoria") && !profJson.get("categoria").isJsonNull()) {
                             existente.setCategoria(profJson.get("categoria").getAsString());
@@ -105,6 +124,18 @@ public class RestaurarDatabaseServlet extends HttpServlet {
                             existente.setEspecialidade(profJson.get("especialidade").getAsString());
                         }
                         profissionalDAO.atualizar(existente);
+
+                        // Propagar nome para tabela usuarios (eliminar duplicidade)
+                        if (novoNome != null) {
+                            java.util.List<Usuario> todos = usuarioDAO.listarTodos();
+                            for (Usuario u : todos) {
+                                if (existente.getId().equals(u.getProfissionalId())) {
+                                    u.setNome(novoNome);
+                                    usuarioDAO.atualizar(u);
+                                    break;
+                                }
+                            }
+                        }
                         modificados++;
                     }
                 }

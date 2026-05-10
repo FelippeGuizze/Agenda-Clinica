@@ -66,7 +66,10 @@ public class ListarConsultaLivreMedicoServlet extends HttpServlet {
                 }
 
                 out.println("<tr style='border-bottom: 1px solid rgba(255, 255, 255, 0.1);'>");
-                out.println("<td style='padding: 12px;'>" + agenda.getClass().getSimpleName() + "</td>");
+                String tipoClasse = agenda.getClass().getSimpleName();
+                String icone = "Exame".equals(tipoClasse) ? "🔬" : "🩺";
+                String tipoColor = "Exame".equals(tipoClasse) ? "#a78bfa" : "#00d4ff";
+                out.println("<td style='padding: 12px; color: " + tipoColor + "; font-weight: 700;'>" + icone + " " + tipoClasse + "</td>");
                 out.println("<td style='padding: 12px; font-weight: 600;'>" + agenda.getTipo() + "</td>");
                 out.println("<td style='padding: 12px;'>" + dataFormatada + "</td>");
                 out.println("<td style='padding: 12px; font-weight: 600; color: #00ff88;'>" + precoFormatado + "</td>");

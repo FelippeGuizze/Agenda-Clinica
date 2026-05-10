@@ -183,13 +183,25 @@ public class CadastroServlet extends HttpServlet {
                     return;
                 }
 
-                // CRM autorizado — criar profissional com CRM
-                Profissional profissional = new Profissional(nome, "Profissional", especialidade);
+                // CRM autorizado — criar profissional com CRM, nome e nicho herdados do admin
+                String nomeDefinitivo = (autorizacao.getNomeAutorizado() != null && !autorizacao.getNomeAutorizado().isEmpty()) 
+                                        ? autorizacao.getNomeAutorizado() : nome;
+                
+                Profissional profissional = new Profissional(nomeDefinitivo, "Profissional", especialidade);
                 profissional.setCrmNumero(crmNumero);
                 profissional.setCrmUf(crmUf);
+                // Herdar tipoNicho do CRM autorizado (definido pelo admin)
+                if (autorizacao.getTipoNicho() != null && !autorizacao.getTipoNicho().isEmpty()) {
+                    profissional.setTipoNicho(autorizacao.getTipoNicho());
+                } else {
+                    profissional.setTipoNicho("Consulta"); // padrão se admin não definiu
+                }
                 ProfissionalDAO profissionalDAO = new ProfissionalDAO();
                 profissionalDAO.salvar(profissional);
                 profissionalId = profissional.getId();
+                
+                // Sobrescrever a variável nome local para que o Usuário também receba o nome correto
+                nome = nomeDefinitivo;
 
                 // Marcar CRM como usado
                 crmDAO.marcarComoUsado(autorizacao.getId());

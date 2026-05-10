@@ -37,14 +37,14 @@
             </c:if>
 
             <div style="margin-bottom: 30px; padding: 15px; background: rgba(0, 212, 255, 0.1); border-radius: 5px; border-left: 4px solid #00d4ff;">
-                <strong>ℹ️ Informação:</strong> Cadastre um CRM autorizado e o email do médico. 
-                Somente médicos com CRM + email pré-autorizados poderão criar conta no sistema.
+                <strong>ℹ️ Informação:</strong> Cadastre um CRM autorizado, o email do médico e o <strong>tipo de atendimento</strong> (Consulta ou Exame).
+                Somente médicos com CRM + email pré-autorizados poderão criar conta. O tipo de atendimento define se o médico poderá oferecer consultas ou exames.
                 <br><small style="color: #aaa;">Formato: CRM/UF XXXXXX (ex: CRM/SP 123456)</small>
             </div>
 
             <!-- Formulário de Cadastro de CRM -->
             <form method="POST" action="${pageContext.request.contextPath}/CadastrarCrmServlet">
-                <div style="display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 15px; align-items: end;">
+                <div style="display: grid; grid-template-columns: 1fr 1.5fr 1fr 2fr 1.2fr; gap: 15px; align-items: end;">
                     <div class="form-group" style="margin-bottom: 0;">
                         <label for="crm_numero">Número CRM:</label>
                         <input type="text" id="crm_numero" name="crm_numero" required 
@@ -88,9 +88,24 @@
                     </div>
 
                     <div class="form-group" style="margin-bottom: 0;">
+                        <label for="nome_autorizado">Nome do Médico:</label>
+                        <input type="text" id="nome_autorizado" name="nome_autorizado" required 
+                               placeholder="Dr. João Silva">
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0;">
                         <label for="email_autorizado">Email do Médico:</label>
                         <input type="email" id="email_autorizado" name="email_autorizado" required 
                                placeholder="medico@email.com">
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="tipo_nicho">Tipo de Atendimento:</label>
+                        <select id="tipo_nicho" name="tipo_nicho" required style="font-size: 1.0em;">
+                            <option value="" disabled selected>-- Selecione --</option>
+                            <option value="Consulta">🩺 Consulta</option>
+                            <option value="Exame">🔬 Exame</option>
+                        </select>
                     </div>
                 </div>
 
@@ -108,7 +123,9 @@
                     <thead>
                         <tr style="border-bottom: 2px solid #00d4ff;">
                             <th style="padding: 12px; text-align: left;">CRM</th>
+                            <th style="padding: 12px; text-align: left;">Nome</th>
                             <th style="padding: 12px; text-align: left;">Email Autorizado</th>
+                            <th style="padding: 12px; text-align: left;">Tipo de Atendimento</th>
                             <th style="padding: 12px; text-align: left;">Status</th>
                             <th style="padding: 12px; text-align: left;">Data</th>
                             <th style="padding: 12px; text-align: center;">Ações</th>
