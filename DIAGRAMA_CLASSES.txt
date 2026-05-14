@@ -47,6 +47,9 @@ DIAGRAMA DE CLASSES E ACOPLAMENTO (UML TEXTUAL BASE)
 | - datahora: LocalDateTime                                 |
 | - status: String                                          |
 | - preco: BigDecimal                                       |
+| - valorTaxa: BigDecimal                                   |
+| - precoFinal: BigDecimal                                  |
+| - incluirTaxaLaboratorial: Boolean                        |
 | - orientacaoMedico: String                                |
 | - disponibilidadeId: Long                                 |
 +-----------------------------------------------------------+
@@ -67,24 +70,6 @@ DIAGRAMA DE CLASSES E ACOPLAMENTO (UML TEXTUAL BASE)
 | + calcularCusto()     |             | + calcularCusto()     |
 | + gerarOrientacoes()  |             | + gerarOrientacoes()  |
 +-----------------------+             +-----------------------+
-
-
--------------------------------------------------------------
-Relacionamentos de Apoio ao Agendamento:
--------------------------------------------------------------
-
-+-----------------------------------------------------------+
-|             <<Deprecated / Removida>>                     |
-|             DisponibilidadeProfissional                   |
-+-----------------------------------------------------------+
-| - id: Long                                                |
-| - profissionalId: Long                                    |
-| - horario: String    ("08:00", "09:00"...)                |
-| - ativo: Boolean                                          |
-+-----------------------------------------------------------+
-| + construct(profissionalId, horario)                      |
-| + getters/setters()                                       |
-+-----------------------------------------------------------+
 
 
 -------------------------------------------------------------
